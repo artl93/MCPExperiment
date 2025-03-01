@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Extensions.ModelContextProtocol", "Microsoft.Extensions.ModelContextProtocol.csproj", "{093164DA-20C2-EEC5-7574-A663458EAE2C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{093164DA-20C2-EEC5-7574-A663458EAE2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{093164DA-20C2-EEC5-7574-A663458EAE2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{093164DA-20C2-EEC5-7574-A663458EAE2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{093164DA-20C2-EEC5-7574-A663458EAE2C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B8C8B9FA-17C6-4C71-97FD-9B1CF8E82797}
+	EndGlobalSection
+EndGlobal

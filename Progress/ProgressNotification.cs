@@ -1,23 +1,15 @@
-using System.Text.Json.Serialization;
 using Microsoft.Extensions.ModelContextProtocol.Messages;
-using Microsoft.Extensions.ModelContextProtocol.Union;
 
 namespace Microsoft.Extensions.ModelContextProtocol.Progress
 {
-    public class ProgressNotificationParams
-    {
-        [JsonPropertyName("progressToken")]
-        public UnionValue ProgressToken { get; set; } = default!;
-
-        [JsonPropertyName("progress")]
-        public double Progress { get; set; }
-
-        [JsonPropertyName("total")]
-        public double? Total { get; set; }
-    }
-
+    /// <summary>
+    /// An out-of-band notification used to inform the receiver of a progress update for a long-running request.
+    /// </summary>
     public class ProgressNotification : JsonRpcNotification<ProgressNotificationParams>, Messages.IClientNotification, Messages.IServerNotification
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProgressNotification"/> class.
+        /// </summary>
         public ProgressNotification() => Method = "notifications/progress";
     }
 }

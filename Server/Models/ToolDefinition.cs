@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.AI.MCP.Server.Models
         /// Gets or sets the description of the tool.
         /// </summary>
         [JsonPropertyName("description")]
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; }
 
         /// <summary>
         /// Gets or sets the parameters of the tool.

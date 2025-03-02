@@ -44,6 +44,26 @@ namespace Microsoft.Extensions.AI.MCP.TestApp.StdioMCP
                     services.AddSingleton<StdioGreetingHandler>();
                 })
                 .Build();
+            // Map tools and prompts BEFORE configuring the HTTP pipeline
+            // This ensures tools are registered before SSE connections are established
+            host.MapTool<WeatherRequest, WeatherResponse>(
+                "getWeather",
+                "Gets the weather for a specific location",
+                async (request) => await SharedImplementations.GetWeatherAsync(request));
+            
+            host.MapSyncTool<CalculatorRequest, int>(
+                "calculate",
+                "Performs a calculation",
+                (request) => SharedImplementations.CalculateResult(request));
+            
+            host.MapPrompt<GreetingRequest, PromptMessage[]>(
+                "greeting",
+                "Generates a greeting message",
+                "Messaging",
+                async (request) => await SharedImplementations.GenerateGreetingAsync(request));
+                
+            // Get the server instance
+            var server = host.Services.GetRequiredService<IMCPServer>();
 
             var logger = host.Services.GetRequiredService<ILogger<Program>>();
             
@@ -53,7 +73,7 @@ namespace Microsoft.Extensions.AI.MCP.TestApp.StdioMCP
             
             // Add tool service registration
             var serviceProvider = host.Services;
-            var server = serviceProvider.GetService<IMCPServer>();
+            // var server = serviceProvider.GetService<IMCPServer>();
             
             if (server != null)
             {

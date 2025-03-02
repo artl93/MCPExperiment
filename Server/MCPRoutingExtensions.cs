@@ -11,6 +11,7 @@ using Microsoft.Extensions.AI.MCP.Server.Attributes;
 using Microsoft.Extensions.AI.MCP.Server.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Hosting;
 
 namespace Microsoft.Extensions.AI.MCP.Server
 {
@@ -32,8 +33,8 @@ namespace Microsoft.Extensions.AI.MCP.Server
         /// <param name="description">The description of the tool.</param>
         /// <param name="handler">The handler delegate.</param>
         /// <returns>The web application.</returns>
-        public static WebApplication MapTool<TRequest, TResult>(
-            this WebApplication app,
+        public static IHost MapTool<TRequest, TResult>(
+            this IHost app,
             string name,
             string description,
             Func<TRequest, Task<TResult>> handler)
@@ -63,8 +64,8 @@ namespace Microsoft.Extensions.AI.MCP.Server
         /// <param name="description">The description of the tool.</param>
         /// <param name="handler">The handler delegate.</param>
         /// <returns>The web application.</returns>
-        public static WebApplication MapSyncTool<TRequest, TResult>(
-            this WebApplication app,
+        public static IHost MapSyncTool<TRequest, TResult>(
+            this IHost app,
             string name,
             string description,
             Func<TRequest, TResult> handler)
@@ -90,7 +91,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
         /// <param name="app">The web application.</param>
         /// <param name="method">The method to map.</param>
         /// <returns>The web application.</returns>
-        public static WebApplication MapTool(this WebApplication app, MethodInfo method)
+        public static IHost MapTool(this IHost app, MethodInfo method)
         {
             var toolAttr = method.GetCustomAttribute<ToolAttribute>();
             if (toolAttr == null)
@@ -144,8 +145,8 @@ namespace Microsoft.Extensions.AI.MCP.Server
         /// <param name="category">The category of the prompt.</param>
         /// <param name="handler">The handler delegate.</param>
         /// <returns>The web application.</returns>
-        public static WebApplication MapPrompt<TRequest, TResult>(
-            this WebApplication app,
+        public static IHost MapPrompt<TRequest, TResult>(
+            this IHost app,
             string name,
             string description,
             string category,
@@ -172,7 +173,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
         /// <param name="app">The web application.</param>
         /// <param name="method">The method to map.</param>
         /// <returns>The web application.</returns>
-        public static WebApplication MapPrompt(this WebApplication app, MethodInfo method)
+        public static IHost MapPrompt(this IHost app, MethodInfo method)
         {
             var promptAttr = method.GetCustomAttribute<PromptAttribute>();
             if (promptAttr == null)

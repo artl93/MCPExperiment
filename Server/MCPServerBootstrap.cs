@@ -43,7 +43,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
             var result = new InitializeResult
             {
                 ProtocolVersion = _options.ProtocolVersion,
-                ServerCapabilities = _options.ServerCapabilities,
+                // ServerCapabilities = _options.ServerCapabilities,
                 ServerInfo = new Capabilities.Implementation
                 {
                     Name = "Bootstrap MCP Server",

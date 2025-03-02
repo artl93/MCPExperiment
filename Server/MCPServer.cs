@@ -213,6 +213,26 @@ namespace Microsoft.Extensions.AI.MCP.Server
             
             SendNotification(notification);
         }
+        
+        /// <summary>
+        /// Sends a notification to all connected clients informing them about changes to the available tools.
+        /// </summary>
+        public void SendToolListChangedNotification()
+        {
+            var tools = MCPRoutingExtensions.GetTools();
+            
+            // Create the notification with the current list of tools
+            var notification = new Resources.ToolListChangedNotification
+            {
+                Params = new Resources.ToolListChangedParams
+                {
+                    AvailableTools = new List<ToolDefinition>(tools.Values)
+                }
+            };
+            
+            _logger.LogInformation("Sending tools list changed notification with {Count} tools", tools.Count);
+            SendNotification(notification);
+        }
 
         private void UpdateServerCapabilities()
         {

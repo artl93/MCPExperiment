@@ -1,57 +1,25 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.AI.MCP;
 using Microsoft.Extensions.AI.MCP.Annotations;
 using Microsoft.Extensions.AI.MCP.Models;
 using Microsoft.Extensions.AI.MCP.Server;
-using Microsoft.Extensions.AI.MCP.Server.Attributes;
+using Microsoft.Extensions.AI.MCP.TestApp;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
-namespace SampleMCPApp
+namespace Microsoft.Extensions.AI.MCP.TestApp.HttpMCP
 {
     public class Program
     {
         public static async Task Main(string[] args)
         {
-            // If command-line argument "stdio" is provided, run as stdio server
-            bool useStdio = args.Contains("--stdio");
-            
-            if (useStdio)
-            {
-                await RunAsStdioServer();
-            }
-            else
-            {
-                await RunAsWebServer();
-            }
+            await RunHttpServer();
         }
 
-        private static async Task RunAsStdioServer()
-        {
-            var host = Host.CreateDefaultBuilder()
-                .ConfigureLogging(logging =>
-                {
-                    logging.ClearProviders();
-                    logging.AddConsole();
-                    // logging.AddFile("mcp-stdio.log"); // Note: This would require a file logging package
-                })
-                .ConfigureServices(services =>
-                {
-                    services.AddMCP(options =>
-                    {
-                        options.EnableStdioProtocol = true;
-                    });
-                })
-                .Build();
-
-            await host.RunMCPConsoleAsync();
-        }
-
-        private static async Task RunAsWebServer()
+        private static async Task RunHttpServer()
         {
             var builder = WebApplication.CreateBuilder();
             
@@ -71,28 +39,62 @@ namespace SampleMCPApp
                 await next();
             });
             
-            // Configure the HTTP pipeline with full spec support
-            app.UseMCPWithSSE();
-            
-            // Map tools and prompts using the extension methods
+            // Map tools and prompts BEFORE configuring the HTTP pipeline
+            // This ensures tools are registered before SSE connections are established
             app.MapTool<WeatherRequest, WeatherResponse>(
                 "getWeather",
                 "Gets the weather for a specific location",
-                async (request) => await GetWeatherAsync(request));
+                async (request) => await SharedImplementations.GetWeatherAsync(request));
             
             app.MapSyncTool<CalculatorRequest, int>(
                 "calculate",
                 "Performs a calculation",
-                (request) => CalculateResult(request));
+                (request) => SharedImplementations.CalculateResult(request));
             
             app.MapPrompt<GreetingRequest, PromptMessage[]>(
                 "greeting",
                 "Generates a greeting message",
                 "Messaging",
-                async (request) => await GenerateGreetingAsync(request));
+                async (request) => await SharedImplementations.GenerateGreetingAsync(request));
+                
+            // Get the server instance
+            var server = app.Services.GetRequiredService<IMCPServer>();
+            Console.WriteLine("Obtained MCP Server instance from DI container");
+            
+            // IMPORTANT: Initialize the server BEFORE configuring the HTTP pipeline
+            // to ensure tools are available when SSE connections are established
+            try 
+            {
+                var initRequest = new Microsoft.Extensions.AI.MCP.Initialization.InitializeRequest
+                {
+                    Params = new Microsoft.Extensions.AI.MCP.Initialization.InitializeRequestParams
+                    {
+                        ProtocolVersion = "2024-11-05",
+                        Capabilities = new Microsoft.Extensions.AI.MCP.Capabilities.ClientCapabilities(),
+                        ClientInfo = new Microsoft.Extensions.AI.MCP.Capabilities.Implementation
+                        {
+                            Name = "HttpMCPApp",
+                            Version = "1.0"
+                        }
+                    }
+                };
+                var result = server.InitializeAsync(initRequest).GetAwaiter().GetResult();
+                Console.WriteLine($"MCP Server manually initialized with {result.Capabilities.Tools?.AvailableTools?.Count ?? 0} tools and {result.Capabilities.Prompts?.AvailablePrompts?.Count ?? 0} prompts");
+                
+                // Send an explicit tool list notification to ensure SSE clients get tool information
+                server.SendToolListChangedNotification();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to initialize MCP Server: {ex.Message}");
+                Console.WriteLine(ex.StackTrace);
+            }
+            
+            // Configure the HTTP pipeline with full spec support AFTER tools are registered and server is initialized
+            app.UseMCPWithSSE();
             
             // Add MCP test/debug endpoint
-            app.MapGet("/", () => "MCP Server is running. Try /debug/mcp-status for more information.");
+            app.MapGet("/", () => "HTTP MCP Server is running. Try /debug/mcp-status for more information.");
             
             // Add an HTML page with a client-side SSE demo
             app.MapGet("/sse-demo", () => Results.Content(@"
@@ -106,10 +108,12 @@ namespace SampleMCPApp
         .event { margin-bottom: 10px; padding: 8px; border-radius: 4px; }
         .event.connected { background-color: #d4edda; }
         .event.normal { background-color: #e2e3e5; }
+        .event.toolsChanged { background-color: #cce5ff; }
         .timestamp { color: #666; font-size: 0.8em; }
         h1 { color: #333; }
         button { padding: 8px 16px; background: #007bff; color: white; border: none; cursor: pointer; }
         button:hover { background: #0069d9; }
+        #tools { border: 1px solid #ccc; padding: 10px; max-height: 200px; overflow-y: auto; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -120,11 +124,15 @@ namespace SampleMCPApp
     <button id=""call-tool"">Call Weather Tool</button>
     <button id=""disconnect"">Disconnect</button>
     
+    <h2>Available Tools:</h2>
+    <div id=""tools"">No tools information received yet</div>
+    
     <h2>Events:</h2>
     <div id=""events""></div>
     
     <script>
         let eventSource = null;
+        let toolsList = [];
         
         function addEvent(type, data) {
             const eventsDiv = document.getElementById('events');
@@ -142,6 +150,31 @@ namespace SampleMCPApp
             eventDiv.appendChild(content);
             eventsDiv.appendChild(eventDiv);
             eventsDiv.scrollTop = eventsDiv.scrollHeight;
+            
+            // If this is a tool list notification, update tools display
+            if (type === 'toolsChanged' && data && data.params && data.params.availableTools) {
+                updateToolsDisplay(data.params.availableTools);
+            }
+        }
+        
+        function updateToolsDisplay(tools) {
+            toolsList = tools;
+            const toolsDiv = document.getElementById('tools');
+            toolsDiv.innerHTML = '';
+            
+            if (!tools || tools.length === 0) {
+                toolsDiv.textContent = 'No tools available';
+                return;
+            }
+            
+            const toolsList = document.createElement('ul');
+            tools.forEach(tool => {
+                const toolItem = document.createElement('li');
+                toolItem.innerHTML = `<strong>${tool.name}</strong>: ${tool.description}`;
+                toolsList.appendChild(toolItem);
+            });
+            
+            toolsDiv.appendChild(toolsList);
         }
         
         document.getElementById('connect').addEventListener('click', () => {
@@ -168,6 +201,13 @@ namespace SampleMCPApp
                 // Listen for specific event types
                 eventSource.addEventListener('connected', (event) => {
                     addEvent('connected', event.data);
+                });
+                
+                // Listen for tool list notifications
+                eventSource.addEventListener('notifications/tools/listChanged', (event) => {
+                    const data = JSON.parse(event.data);
+                    addEvent('toolsChanged', data);
+                    console.log('Tools list updated:', data);
                 });
                 
                 // Listen for errors
@@ -223,35 +263,7 @@ namespace SampleMCPApp
 </html>
 ", "text/html"));
             
-            // Get the server instance
-            var server = app.Services.GetRequiredService<IMCPServer>();
-            Console.WriteLine("Obtained MCP Server instance from DI container");
-            
-            // Force manual server initialization with a dummy initialize request
-            try 
-            {
-                var initRequest = new Microsoft.Extensions.AI.MCP.Initialization.InitializeRequest
-                {
-                    Params = new Microsoft.Extensions.AI.MCP.Initialization.InitializeRequestParams
-                    {
-                        ProtocolVersion = "2024-11-05",
-                        Capabilities = new Microsoft.Extensions.AI.MCP.Capabilities.ClientCapabilities(),
-                        ClientInfo = new Microsoft.Extensions.AI.MCP.Capabilities.Implementation
-                        {
-                            Name = "SampleMCPApp",
-                            Version = "1.0"
-                        }
-                    }
-                };
-                var result = server.InitializeAsync(initRequest).GetAwaiter().GetResult();
-                Console.WriteLine($"MCP Server manually initialized with {result.Capabilities.Tools?.AvailableTools?.Count ?? 0} tools and {result.Capabilities.Prompts?.AvailablePrompts?.Count ?? 0} prompts");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Failed to initialize MCP Server: {ex.Message}");
-                Console.WriteLine(ex.StackTrace);
-            }
-            Console.WriteLine("MCP Server is running on http://localhost:5000");
+            Console.WriteLine("HTTP MCP Server is running on http://localhost:5000");
             Console.WriteLine("- JSON-RPC API: POST to /mcp");
             Console.WriteLine("- SSE Endpoint: Connect to /sse");
             Console.WriteLine("- SSE Demo Page: Open /sse-demo in your browser");
@@ -277,133 +289,18 @@ namespace SampleMCPApp
                 return new { success = true, message = "Notification sent" };
             });
             
+            // Add an endpoint to send a tool list changed notification
+            app.MapGet("/send-tools-notification", () => {
+                server.SendToolListChangedNotification();
+                return new { 
+                    success = true, 
+                    message = "Tool list notification sent",
+                    toolCount = MCPRoutingExtensions.GetTools().Count
+                };
+            });
+            
             // Start the server
             await app.RunAsync();
-        }
-
-        // Tool implementations
-        private static async Task<WeatherResponse> GetWeatherAsync(WeatherRequest request)
-        {
-            // Simulate an async operation
-            await Task.Delay(100);
-            
-            var response = new WeatherResponse
-            {
-                Temperature = 72,
-                Conditions = "Sunny",
-                Location = request.Location
-            };
-            
-            return response;
-        }
-
-        private static int CalculateResult(CalculatorRequest request)
-        {
-            return request.Operation switch
-            {
-                "add" => request.A + request.B,
-                "subtract" => request.A - request.B,
-                "multiply" => request.A * request.B,
-                "divide" => request.B != 0 ? request.A / request.B : 0,
-                _ => 0
-            };
-        }
-
-        // Prompt implementations
-        private static async Task<PromptMessage[]> GenerateGreetingAsync(GreetingRequest request)
-        {
-            // Simulate an async operation
-            await Task.Delay(100);
-            
-            var timeOfDay = DateTime.Now.Hour switch
-            {
-                >= 5 and < 12 => "morning",
-                >= 12 and < 17 => "afternoon",
-                _ => "evening"
-            };
-            
-            var formality = request.Formal ? "formal" : "casual";
-            var greeting = formality == "formal" ? "Greetings" : "Hey";
-            
-            var message = $"{greeting} {request.Name}, good {timeOfDay}!";
-            
-            return new[] 
-            {
-                new PromptMessage 
-                { 
-                    Role = "system",
-                    Content = new TextContent { Text = message }
-                }
-            };
-        }
-    }
-
-    // Data models for tools and prompts
-    public class WeatherRequest
-    {
-        [ToolParameter(Description = "The location to get weather for", Required = true)]
-        public string Location { get; set; } = string.Empty;
-
-        [ToolParameter(Description = "The unit of temperature (celsius or fahrenheit)", Required = false)]
-        public string Unit { get; set; } = "fahrenheit";
-    }
-
-    public class WeatherResponse
-    {
-        public double Temperature { get; set; }
-        public string Conditions { get; set; } = string.Empty;
-        public string Location { get; set; } = string.Empty;
-    }
-
-    public class CalculatorRequest
-    {
-        [ToolParameter(Description = "The first operand")]
-        public int A { get; set; }
-
-        [ToolParameter(Description = "The second operand")]
-        public int B { get; set; }
-
-        [ToolParameter(Description = "The operation to perform (add, subtract, multiply, divide)")]
-        public string Operation { get; set; } = "add";
-    }
-
-    public class GreetingRequest
-    {
-        [PromptParameter(Description = "The name of the person to greet")]
-        public string Name { get; set; } = string.Empty;
-
-        [PromptParameter(Description = "Whether to use formal language", Required = false)]
-        public bool Formal { get; set; } = false;
-    }
-
-    // Alternative example with attributes on methods
-    public class ToolExamples
-    {
-        [Tool(Name = "stringLength", Description = "Counts the number of characters in a string")]
-        public int GetStringLength([ToolParameter(Description = "The string to count")] string text)
-        {
-            return text?.Length ?? 0;
-        }
-
-        [Tool(Description = "Converts a string to uppercase")]
-        public string ToUpperCase([ToolParameter] string text)
-        {
-            return text?.ToUpper() ?? string.Empty;
-        }
-
-        [Prompt(Name = "askQuestion", Description = "Generates a message asking a question", Category = "Conversation")]
-        public PromptMessage[] GenerateQuestion(
-            [PromptParameter(Description = "The topic of the question")] string topic,
-            [PromptParameter(Description = "The difficulty level", Required = false)] string difficulty = "medium")
-        {
-            return new[] 
-            {
-                new PromptMessage 
-                { 
-                    Role = "system",
-                    Content = new TextContent { Text = $"Please ask a {difficulty} question about {topic}." }
-                }
-            };
         }
     }
 }

@@ -29,10 +29,11 @@ namespace Microsoft.Extensions.AI.MCP.Server.SSE
             ConnectionId = Guid.NewGuid().ToString();
             _cancellationTokenSource = new CancellationTokenSource();
             
-            // Configure response for SSE
+            // Configure response headers according to MCP spec for SSE
             _response.Headers["Content-Type"] = "text/event-stream";
             _response.Headers["Cache-Control"] = "no-cache";
             _response.Headers["Connection"] = "keep-alive";
+            _response.Headers["X-Accel-Buffering"] = "no"; // Disable proxy buffering
         }
 
         /// <summary>

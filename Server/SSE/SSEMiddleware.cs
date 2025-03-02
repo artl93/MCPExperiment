@@ -37,8 +37,7 @@ namespace Microsoft.Extensions.AI.MCP.Server.SSE
         /// <returns>A task representing the asynchronous operation.</returns>
         public async Task InvokeAsync(HttpContext context)
         {
-            if (context.Request.Path.StartsWithSegments("/mcp/events", StringComparison.OrdinalIgnoreCase) || 
-                context.Request.Path.Equals("/sse", StringComparison.OrdinalIgnoreCase))
+            if (context.Request.Path.Equals("/sse", StringComparison.OrdinalIgnoreCase))
             {
                 _logger.LogDebug("SSE connection request received from {Path}", context.Request.Path);
 

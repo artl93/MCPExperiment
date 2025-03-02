@@ -347,6 +347,18 @@ namespace Microsoft.Extensions.AI.MCP.Server
                     {
                         // Server instance exists, it will use updated capabilities on next request
                         Console.WriteLine($"Updated MCP Server capabilities: {_tools.Count} tools, {_prompts.Count} prompts");
+                        
+                        // Send a notification that tools have changed
+                        try 
+                        {
+                            // Use the new method to send tool list changed notification
+                            server.SendToolListChangedNotification();
+                            Console.WriteLine("Sent ToolListChanged notification to clients");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Failed to send ToolListChanged notification: {ex.Message}");
+                        }
                     }
                 }
                 catch (InvalidOperationException)

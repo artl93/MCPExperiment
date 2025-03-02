@@ -40,11 +40,11 @@ namespace Microsoft.Extensions.AI.MCP.Server.SSE
                 var methodProperty = document.RootElement.GetProperty("method");
                 var methodName = methodProperty.GetString() ?? "unknown";
                 
-                // Create an event name based on the method
-                // Strip "notifications/" prefix if it exists
-                var eventName = methodName.StartsWith("notifications/", StringComparison.OrdinalIgnoreCase)
-                    ? methodName.Substring("notifications/".Length)
-                    : methodName;
+                // Create an event name based on the method per the MCP specification
+                // The event type should be the method name itself
+                string eventName = methodName;
+                
+                _logger.LogInformation("Handling SSE notification: {Method}", methodName);
 
                 // Send the event to all connected clients
                 await _connectionManager.SendEventToAllAsync(eventName, e.NotificationJson);

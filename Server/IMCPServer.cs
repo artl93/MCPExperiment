@@ -34,6 +34,11 @@ namespace Microsoft.Extensions.AI.MCP.Server
         /// </summary>
         /// <param name="message">The message to include in the notification.</param>
         void SendDemoNotification(string message);
+        
+        /// <summary>
+        /// Sends a notification to all connected clients informing them about changes to the available tools.
+        /// </summary>
+        void SendToolListChangedNotification();
     }
 
     /// <summary>

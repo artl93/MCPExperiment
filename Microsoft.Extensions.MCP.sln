@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Extensions.MCP.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerDISample", "ServerDISample\ServerDISample.csproj", "{A6BDDFF5-0C08-4D1D-A6A8-A1CEEE4829CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpMCP", "TestApp\HttpMCP\HttpMCP.csproj", "{F072C27A-0C8C-4C44-A51E-9A0B0DD04555}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StdioMCP", "TestApp\StdioMCP\StdioMCP.csproj", "{1D0FD2DB-9C75-4B0A-B159-A7FE9537086F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +30,14 @@ Global
 		{A6BDDFF5-0C08-4D1D-A6A8-A1CEEE4829CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6BDDFF5-0C08-4D1D-A6A8-A1CEEE4829CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6BDDFF5-0C08-4D1D-A6A8-A1CEEE4829CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F072C27A-0C8C-4C44-A51E-9A0B0DD04555}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F072C27A-0C8C-4C44-A51E-9A0B0DD04555}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F072C27A-0C8C-4C44-A51E-9A0B0DD04555}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F072C27A-0C8C-4C44-A51E-9A0B0DD04555}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D0FD2DB-9C75-4B0A-B159-A7FE9537086F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D0FD2DB-9C75-4B0A-B159-A7FE9537086F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D0FD2DB-9C75-4B0A-B159-A7FE9537086F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D0FD2DB-9C75-4B0A-B159-A7FE9537086F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

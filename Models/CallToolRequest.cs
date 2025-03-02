@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.AI.MCP.Messages;
 
 namespace Microsoft.Extensions.AI.MCP.Models
 {
@@ -7,7 +8,7 @@ namespace Microsoft.Extensions.AI.MCP.Models
     /// Used by the client to invoke a tool provided by the server.
     /// Corresponds to the TypeScript CallToolRequest.
     /// </summary>
-    public class CallToolRequest : Request
+    public class CallToolRequest : Request, IClientRequest
     {
         public CallToolRequest()
         {
@@ -15,6 +16,24 @@ namespace Microsoft.Extensions.AI.MCP.Models
         }
 
         public new CallToolParams Params { get; set; } = new CallToolParams();
+        
+        /// <summary>
+        /// Added property for compatibility with existing code
+        /// </summary>
+        public string Name
+        {
+            get => Params.Name;
+            set => Params.Name = value;
+        }
+        
+        /// <summary>
+        /// Added property for compatibility with existing code
+        /// </summary>
+        public Dictionary<string, object>? Arguments
+        {
+            get => Params.Arguments;
+            set => Params.Arguments = value;
+        }
     }
 
     /// <summary>
@@ -25,6 +44,7 @@ namespace Microsoft.Extensions.AI.MCP.Models
     /// </summary>
     public class CallToolParams
     {
+        [JsonPropertyName("name")]
         public string Name { get; set; } = "";
         
         [JsonPropertyName("arguments")]

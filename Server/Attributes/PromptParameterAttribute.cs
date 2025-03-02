@@ -5,7 +5,7 @@ namespace Microsoft.Extensions.AI.MCP.Server.Attributes
     /// <summary>
     /// Attribute for describing prompt parameters.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property, AllowMultiple = false)]
     public class PromptParameterAttribute : Attribute
     {
         /// <summary>

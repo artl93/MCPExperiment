@@ -2,6 +2,7 @@ namespace Microsoft.Extensions.AI.MCP
 {
     public static class Constants
     {
+        // TODO: Update this to the real protocol version when available.
         public const string LatestProtocolVersion = "2024-11-05";
         public const string JsonRpcVersion = "2.0";
         public const int ParseError = -32700;

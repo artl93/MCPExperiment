@@ -5,7 +5,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.AI.MCP.Initialization;
 using Microsoft.Extensions.AI.MCP.Messages;
+using Microsoft.Extensions.AI.MCP.Models;
 using Microsoft.Extensions.AI.MCP.Protocol.JsonRpc.Serialization;
 using Microsoft.Extensions.Logging;
 
@@ -181,7 +183,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
                     
                     while (bytesRead < contentLength)
                     {
-                        var read = await reader.ReadAsync(buffer, bytesRead, contentLength - bytesRead, cancellationToken);
+                        var read = await reader.ReadAsync(buffer, bytesRead, contentLength - bytesRead);
                         if (read == 0)
                         {
                             break; // EOF
@@ -208,7 +210,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
                         // Create error response
                         var errorResponse = new JsonRpcResponse<object>
                         {
-                            Id = null,
+                            Id = default!,
                             Error = new JsonRpcError
                             {
                                 Code = -32700,

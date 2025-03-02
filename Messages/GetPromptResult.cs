@@ -20,5 +20,22 @@ namespace Microsoft.Extensions.AI.MCP.Messages
         /// </summary>
         [JsonPropertyName("messages")]
         public List<PromptMessage> Messages { get; set; } = new List<PromptMessage>();
+        
+        /// <summary>
+        /// The prompt property for compatibility with existing code.
+        /// </summary>
+        public Prompt Prompt 
+        { 
+            get => new Prompt 
+            { 
+                Description = Description ?? string.Empty,
+                Messages = Messages
+            };
+            set
+            {
+                Description = value.Description;
+                Messages = value.Messages;
+            }
+        }
     }
 }

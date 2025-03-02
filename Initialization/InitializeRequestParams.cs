@@ -1,12 +1,13 @@
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.AI.MCP.Capabilities;
+using Microsoft.Extensions.AI.MCP.Messages;
 
 namespace Microsoft.Extensions.AI.MCP.Initialization
 {
     /// <summary>
     /// Parameters for the initialize request sent from client to server.
     /// </summary>
-    public class InitializeRequestParams
+    public class InitializeRequestParams : IClientRequest
     {
         /// <summary>
         /// The latest version of the Model Context Protocol that the client supports.

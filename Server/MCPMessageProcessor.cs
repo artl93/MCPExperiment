@@ -166,7 +166,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
                     {
                         Prompt = new Prompt
                         {
-                            Messages = result as PromptMessage[] ?? Array.Empty<PromptMessage>()
+                            Messages = (result as PromptMessage[])?.ToList() ?? new List<PromptMessage>()
                         }
                     }
                 };
@@ -242,7 +242,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
                         Result = new CallToolResult
                         {
                             // Create a TextContent result from the tool result
-                            Content = new TextContent { Text = result?.ToString() ?? string.Empty }
+                            Content = new List<object> { new TextContent { Text = result?.ToString() ?? string.Empty } }
                         }
                     };
                 }
@@ -260,7 +260,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
                         Result = new CallToolResult
                         {
                             // Create a TextContent result from the tool result
-                            Content = new TextContent { Text = result?.ToString() ?? string.Empty }
+                            Content = new List<object> { new TextContent { Text = result?.ToString() ?? string.Empty } }
                         }
                     };
                 }
@@ -291,7 +291,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
             
             return new JsonRpcResponse<object>
             {
-                Id = message is JsonRpcRequest<object> request ? request.Id : null,
+                Id = message is JsonRpcRequest<object> request ? request.Id : default!,
                 Error = error
             };
         }
@@ -307,7 +307,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
             
             return new JsonRpcResponse<object>
             {
-                Id = message is JsonRpcRequest<object> request ? request.Id : null,
+                Id = message is JsonRpcRequest<object> request ? request.Id : default!,
                 Error = error
             };
         }

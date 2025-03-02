@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.AI.MCP.Server.Models;
 
 namespace Microsoft.Extensions.AI.MCP.Capabilities
 {
@@ -12,5 +14,11 @@ namespace Microsoft.Extensions.AI.MCP.Capabilities
         /// </summary>
         [JsonPropertyName("listChanged")]
         public bool? ListChanged { get; set; }
+
+        /// <summary>
+        /// The list of tools available on the server.
+        /// </summary>
+        [JsonPropertyName("availableTools")]
+        public List<ToolDefinition> AvailableTools { get; set; } = new List<ToolDefinition>();
     }
 }

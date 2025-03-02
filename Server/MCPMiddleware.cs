@@ -86,7 +86,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
                 var error = new
                 {
                     jsonrpc = Constants.JsonRpcVersion,
-                    id = null,
+                    id = (object)null!,
                     error = new
                     {
                         code = -32000,

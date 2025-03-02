@@ -123,7 +123,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
                     
                     var errorResponse = new JsonRpcResponse<object>
                     {
-                        Id = deserializedMessage is JsonRpcRequest<object> req ? req.Id : null,
+                        Id = deserializedMessage is JsonRpcRequest<object> req ? req.Id : default!,
                         Error = error
                     };
                     
@@ -154,7 +154,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
                 
                 var errorResponse = new JsonRpcResponse<object>
                 {
-                    Id = null, // We may not be able to parse the ID
+                    Id = default!, // We may not be able to parse the ID
                     Error = error
                 };
                 
@@ -220,7 +220,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
                 toolsList.Add(toolInfo);
             }
             
-            _options.ServerCapabilities.Tools.AvailableTools = toolsList;
+            _options.ServerCapabilities.Tools.AvailableTools = tools.Values.ToList();
             
             // Update prompt capabilities
             var promptsList = new List<Dictionary<string, object>>();
@@ -237,7 +237,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
                 promptsList.Add(promptInfo);
             }
             
-            _options.ServerCapabilities.Prompts.AvailablePrompts = promptsList;
+            _options.ServerCapabilities.Prompts.AvailablePrompts = prompts.Values.ToList();
         }
     }
 }

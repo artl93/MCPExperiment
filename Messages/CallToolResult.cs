@@ -23,6 +23,16 @@ namespace Microsoft.Extensions.AI.MCP.Messages
         /// </remarks>
         [JsonPropertyName("content")]
         public List<object> Content { get; set; } = new List<object>();
+        
+        /// <summary>
+        /// Alias for Content property to support existing code.
+        /// </summary>
+        [JsonIgnore]
+        public List<object> Result 
+        { 
+            get => Content; 
+            set => Content = value; 
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the tool call ended in an error.

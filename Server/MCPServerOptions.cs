@@ -21,7 +21,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
         /// <summary>
         /// Gets or sets the protocol version to use.
         /// </summary>
-        public string ProtocolVersion { get; set; } = Constants.DefaultVersion;
+        public string ProtocolVersion { get; set; } = Constants.LatestProtocolVersion;
 
         /// <summary>
         /// Gets or sets custom experimental capabilities.

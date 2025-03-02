@@ -24,7 +24,6 @@ namespace Microsoft.Extensions.AI.MCP.Models
         /// This can be TextContent, ImageContent, AudioContent, or EmbeddedResource.
         /// </remarks>
         [JsonPropertyName("content")]
-        [JsonConverter(typeof(Union.UnionJsonConverter))]
         public object Content { get; set; } = default!;
     }
 }

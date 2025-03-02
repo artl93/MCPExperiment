@@ -48,6 +48,7 @@ namespace Microsoft.Extensions.AI.MCP.Server.SSE
 
             try
             {
+                // Ensure proper SSE format with the correct line endings (CRLF won't work)
                 await _response.WriteAsync($"event: {eventName}\n");
                 
                 // Format data with line breaks
@@ -56,11 +57,19 @@ namespace Microsoft.Extensions.AI.MCP.Server.SSE
                     await _response.WriteAsync($"data: {line}\n");
                 }
                 
+                // End the event with an empty line
                 await _response.WriteAsync("\n");
+                
+                // Force flush to ensure data is sent immediately
                 await _response.Body.FlushAsync();
+                
+                // Log the event for debugging
+                Console.WriteLine($"SSE event sent: {eventName}");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Log the error
+                Console.WriteLine($"Error sending SSE event: {ex.Message}");
                 // Connection likely closed by client
                 Cancel();
             }
@@ -76,11 +85,19 @@ namespace Microsoft.Extensions.AI.MCP.Server.SSE
 
             try
             {
+                // Send a comment line as a keep-alive ping
                 await _response.WriteAsync(": ping\n\n");
+                
+                // Force flush to ensure data is sent immediately
                 await _response.Body.FlushAsync();
+                
+                // Log for debugging
+                Console.WriteLine($"SSE keep-alive sent to {ConnectionId}");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Log the error
+                Console.WriteLine($"Error sending keep-alive: {ex.Message}");
                 // Connection likely closed by client
                 Cancel();
             }

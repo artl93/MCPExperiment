@@ -24,8 +24,7 @@ namespace Microsoft.Extensions.AI.MCP.TestApp.StdioMCP
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
-                    // logging.AddConsole();
-                    logging.AddDebug();
+                    logging.AddConsole( o => o.LogToStandardErrorThreshold = LogLevel.Error);
                     // For production, you might want to add file logging
                     // logging.AddFile("mcp-stdio.log");  // This would require a file logging package
                 })

@@ -221,17 +221,37 @@ namespace Microsoft.Extensions.AI.MCP.Server
         {
             var tools = MCPRoutingExtensions.GetTools();
             
-            // Create the notification with the current list of tools
-            var notification = new Resources.ToolListChangedNotification
+            // Create tool definitions in a simpler format for serialization
+            var simplifiedTools = tools.Values.Select(tool => new 
             {
-                Params = new Resources.ToolListChangedParams
+                name = tool.Name,
+                description = tool.Description,
+                parameters = tool.Parameters?.Select(p => new 
                 {
-                    AvailableTools = new List<ToolDefinition>(tools.Values)
+                    name = p.Key,
+                    description = p.Value.Description,
+                    type = p.Value.Type,
+                    required = p.Value.Required
+                }).ToList()
+            }).ToList();
+            
+            // Create the notification with the current list of tools
+            var notification = new Messages.JsonRpcNotification<object>
+            {
+                JsonRpc = "2.0",
+                Method = "notifications/tools/listChanged",
+                Params = new 
+                { 
+                    availableTools = simplifiedTools
                 }
             };
             
             _logger.LogInformation("Sending tools list changed notification with {Count} tools", tools.Count);
-            SendNotification(notification);
+            
+            // Serialize and send directly
+            var json = _protocolHandler.SerializeMessage(notification);
+            _logger.LogDebug("Serialized notification: {Json}", json);
+            NotificationReady?.Invoke(this, new ServerNotificationEventArgs(json));
         }
 
         private void UpdateServerCapabilities()

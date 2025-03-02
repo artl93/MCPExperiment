@@ -17,6 +17,11 @@ namespace Microsoft.Extensions.AI.MCP.Server.SSE
         private readonly ILogger<SSEConnectionManager> _logger;
         private readonly Timer _keepAliveTimer;
         private bool _disposed;
+        
+        /// <summary>
+        /// Gets the current number of active connections.
+        /// </summary>
+        public int ConnectionCount => _connections.Count;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SSEConnectionManager"/> class.
@@ -70,6 +75,17 @@ namespace Microsoft.Extensions.AI.MCP.Server.SSE
             if (_disposed) return;
 
             var disconnectedConnections = new List<string>();
+            int successCount = 0;
+
+            // Debug log at the start
+            _logger.LogInformation("Sending '{EventName}' event to {ConnectionCount} SSE clients", 
+                eventName, _connections.Count);
+            
+            if (_connections.Count == 0)
+            {
+                _logger.LogWarning("No active SSE connections to send events to");
+                return;
+            }
 
             foreach (var connection in _connections.Values)
             {
@@ -77,11 +93,14 @@ namespace Microsoft.Extensions.AI.MCP.Server.SSE
                 {
                     if (connection.CancellationToken.IsCancellationRequested)
                     {
+                        _logger.LogDebug("Connection {ConnectionId} has cancellation requested, skipping", connection.ConnectionId);
                         disconnectedConnections.Add(connection.ConnectionId);
                         continue;
                     }
 
+                    _logger.LogDebug("Sending event '{EventName}' to connection {ConnectionId}", eventName, connection.ConnectionId);
                     await connection.SendEventAsync(eventName, data);
+                    successCount++;
                 }
                 catch (Exception ex)
                 {
@@ -95,6 +114,9 @@ namespace Microsoft.Extensions.AI.MCP.Server.SSE
             {
                 RemoveConnection(connectionId);
             }
+            
+            _logger.LogInformation("Successfully sent '{EventName}' event to {SuccessCount} connections", 
+                eventName, successCount);
         }
 
         private void SendKeepAlive(object? state)

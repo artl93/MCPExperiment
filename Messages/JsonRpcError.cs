@@ -6,8 +6,10 @@ namespace Microsoft.Extensions.AI.MCP.Messages
     /// <summary>
     /// Represents a JSON-RPC error response.
     /// </summary>
-    public class JsonRpcError : JsonRpcMessage
+    public class JsonRpcError
     {
+        public string JsonRpc { get; set; } = Constants.JsonRpcVersion;
+
         /// <summary>
         /// The ID of the request this error response corresponds to.
         /// </summary>

@@ -346,18 +346,18 @@ namespace Microsoft.Extensions.AI.MCP.Server
                     if (server != null)
                     {
                         // Server instance exists, it will use updated capabilities on next request
-                        Console.WriteLine($"Updated MCP Server capabilities: {_tools.Count} tools, {_prompts.Count} prompts");
+                        System.Diagnostics.Debug.WriteLine($"Updated MCP Server capabilities: {_tools.Count} tools, {_prompts.Count} prompts");
                         
                         // Send a notification that tools have changed
                         try 
                         {
                             // Use the new method to send tool list changed notification
                             server.SendToolListChangedNotification();
-                            Console.WriteLine("Sent ToolListChanged notification to clients");
+                            System.Diagnostics.Debug.WriteLine("Sent ToolListChanged notification to clients");
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"Failed to send ToolListChanged notification: {ex.Message}");
+                            System.Diagnostics.Debug.WriteLine($"Failed to send ToolListChanged notification: {ex.Message}");
                         }
                     }
                 }
@@ -369,7 +369,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error updating server capabilities: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Error updating server capabilities: {ex.Message}");
             }
         }
     }

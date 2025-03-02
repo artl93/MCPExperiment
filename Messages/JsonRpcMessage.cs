@@ -10,7 +10,7 @@ namespace Microsoft.Extensions.AI.MCP.Messages
         /// <summary>
         /// The JSON-RPC protocol version.
         /// </summary>
-        [JsonPropertyName("jsonrpc")]
+        [JsonPropertyName("jsonrpc")]        
         public string JsonRpc { get; set; } = Constants.JsonRpcVersion;
     }
 }

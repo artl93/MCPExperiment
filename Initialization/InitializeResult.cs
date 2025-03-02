@@ -24,15 +24,6 @@ namespace Microsoft.Extensions.AI.MCP.Initialization
         public ServerCapabilities Capabilities { get; set; } = default!;
 
         /// <summary>
-        /// For backward compatibility with existing implementation.
-        /// </summary>
-        public ServerCapabilities ServerCapabilities 
-        { 
-            get => Capabilities; 
-            set => Capabilities = value;
-        }
-
-        /// <summary>
         /// Information about the server implementation.
         /// </summary>
         [JsonPropertyName("serverInfo")]

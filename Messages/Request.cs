@@ -6,8 +6,13 @@ namespace Microsoft.Extensions.AI.MCP.Messages
     /// Base class for all request messages.
     /// </summary>
     /// <typeparam name="TParams">The type of the parameters.</typeparam>
-    public abstract class Request<TParams> : JsonRpcMessage
+    public abstract class Request<TParams> 
     {
+        /// <summary>
+        /// The JSON-RPC protocol version.
+        /// </summary>
+        public string JsonRpc { get; set; } = Constants.JsonRpcVersion;
+
         /// <summary>
         /// The method name to be invoked.
         /// </summary>

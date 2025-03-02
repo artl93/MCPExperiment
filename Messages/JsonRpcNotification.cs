@@ -6,8 +6,13 @@ namespace Microsoft.Extensions.AI.MCP.Messages
     /// Represents a JSON-RPC notification which does not expect a response.
     /// </summary>
     /// <typeparam name="TParams">The type of the parameters.</typeparam>
-    public class JsonRpcNotification<TParams> : JsonRpcMessage
+    public class JsonRpcNotification<TParams> 
     {
+        /// <summary>
+        /// The JSON-RPC protocol version.
+        /// </summary>
+        public string JsonRpc { get; set; } = Constants.JsonRpcVersion;
+
         /// <summary>
         /// The method name to be invoked.
         /// </summary>

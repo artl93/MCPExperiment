@@ -36,6 +36,19 @@ namespace Microsoft.Extensions.AI.MCP.TestApp.HttpMCP
             app.Use(async (context, next) =>
             {
                 Console.WriteLine($"Request received: {context.Request.Method} {context.Request.Path}");
+                Console.WriteLine($"Request headers: {context.Request.Headers}");
+                if (context.Request.Method == "POST")
+                {
+                    using var reader = new System.IO.StreamReader(context.Request.Body);
+                    var body = await reader.ReadToEndAsync();
+                    Console.WriteLine($"Request body: {body}");
+                    context.Request.Body.Position = 0; // Reset the stream position for further processing
+                }
+                if (context.Request.Method == "GET")
+                {
+                    Console.WriteLine($"Query string: {context.Request.QueryString}");
+                }
+                // Call the next middleware in the pipeline
                 await next();
             });
             
@@ -109,6 +122,8 @@ namespace Microsoft.Extensions.AI.MCP.TestApp.HttpMCP
         .event.connected { background-color: #d4edda; }
         .event.normal { background-color: #e2e3e5; }
         .event.toolsChanged { background-color: #cce5ff; }
+        .event.test { background-color: #fff3cd; }
+        .event.error { background-color: #f8d7da; }
         .timestamp { color: #666; font-size: 0.8em; }
         h1 { color: #333; }
         button { padding: 8px 16px; background: #007bff; color: white; border: none; cursor: pointer; }
@@ -122,6 +137,7 @@ namespace Microsoft.Extensions.AI.MCP.TestApp.HttpMCP
     
     <button id=""connect"">Connect to SSE</button>
     <button id=""call-tool"">Call Weather Tool</button>
+    <button id=""test-sse"">Test SSE Event</button>
     <button id=""disconnect"">Disconnect</button>
     
     <h2>Available Tools:</h2>
@@ -152,8 +168,14 @@ namespace Microsoft.Extensions.AI.MCP.TestApp.HttpMCP
             eventsDiv.scrollTop = eventsDiv.scrollHeight;
             
             // If this is a tool list notification, update tools display
-            if (type === 'toolsChanged' && data && data.params && data.params.availableTools) {
-                updateToolsDisplay(data.params.availableTools);
+            if (type === 'toolsChanged' && data) {
+                // Handle both possible formats
+                const tools = data.params?.availableTools || data.params?.AvailableTools || [];
+                if (tools && tools.length > 0) {
+                    updateToolsDisplay(tools);
+                } else {
+                    console.warn('No tools found in notification data:', data);
+                }
             }
         }
         
@@ -167,14 +189,20 @@ namespace Microsoft.Extensions.AI.MCP.TestApp.HttpMCP
                 return;
             }
             
-            const toolsList = document.createElement('ul');
+            console.log('Tools to display:', tools);
+            
+            const toolsListElement = document.createElement('ul');
             tools.forEach(tool => {
                 const toolItem = document.createElement('li');
-                toolItem.innerHTML = `<strong>${tool.name}</strong>: ${tool.description}`;
-                toolsList.appendChild(toolItem);
+                // Handle both camelCase and PascalCase property names
+                const name = tool.name || tool.Name || 'Unknown tool';
+                const description = tool.description || tool.Description || 'No description';
+                
+                toolItem.innerHTML = `<strong>${name}</strong>: ${description}`;
+                toolsListElement.appendChild(toolItem);
             });
             
-            toolsDiv.appendChild(toolsList);
+            toolsDiv.appendChild(toolsListElement);
         }
         
         document.getElementById('connect').addEventListener('click', () => {
@@ -205,9 +233,34 @@ namespace Microsoft.Extensions.AI.MCP.TestApp.HttpMCP
                 
                 // Listen for tool list notifications
                 eventSource.addEventListener('notifications/tools/listChanged', (event) => {
-                    const data = JSON.parse(event.data);
-                    addEvent('toolsChanged', data);
-                    console.log('Tools list updated:', data);
+                    console.log('Raw event data:', event.data);
+                    try {
+                        const data = JSON.parse(event.data);
+                        addEvent('toolsChanged', data);
+                        console.log('Tools list updated:', data);
+                        
+                        // Add a direct message to make debugging easier
+                        const eventsDiv = document.getElementById('events');
+                        const debugDiv = document.createElement('div');
+                        debugDiv.style.color = 'blue';
+                        debugDiv.textContent = `Raw data received: ${event.data}`;
+                        eventsDiv.appendChild(debugDiv);
+                    } catch (err) {
+                        console.error('Error parsing event data:', err);
+                        addEvent('error', `Failed to parse event data: ${err.message}\nRaw data: ${event.data}`);
+                    }
+                });
+                
+                // Listen for test events
+                eventSource.addEventListener('test-event', (event) => {
+                    console.log('Test event received:', event.data);
+                    try {
+                        const data = JSON.parse(event.data);
+                        addEvent('test', data);
+                    } catch (err) {
+                        console.error('Error parsing test event data:', err);
+                        addEvent('error', `Failed to parse test event: ${err.message}`);
+                    }
                 });
                 
                 // Listen for errors
@@ -246,6 +299,18 @@ namespace Microsoft.Extensions.AI.MCP.TestApp.HttpMCP
                 addEvent('normal', 'Tool call result: ' + JSON.stringify(result));
             } catch (err) {
                 addEvent('normal', 'Tool call failed: ' + err.message);
+            }
+        });
+        
+        document.getElementById('test-sse').addEventListener('click', async () => {
+            try {
+                // Call the test SSE endpoint
+                const response = await fetch('/test-sse');
+                const result = await response.json();
+                console.log('Test SSE response:', result);
+                addEvent('normal', 'Triggered test SSE event');
+            } catch (err) {
+                addEvent('normal', 'Test SSE failed: ' + err.message);
             }
         });
         
@@ -297,6 +362,26 @@ namespace Microsoft.Extensions.AI.MCP.TestApp.HttpMCP
                     message = "Tool list notification sent",
                     toolCount = MCPRoutingExtensions.GetTools().Count
                 };
+            });
+            
+            // Add a test endpoint to try SSE with a simple event
+            app.MapGet("/test-sse", (Microsoft.Extensions.Logging.ILogger<Program> logger) => {
+                var connectionManager = app.Services.GetRequiredService<Microsoft.Extensions.AI.MCP.Server.SSE.SSEConnectionManager>();
+                
+                // Send a simple test event
+                Task.Run(async () => {
+                    try {
+                        var testData = @"{""test"":true, ""message"":""This is a test event"", ""timestamp"":""" + DateTime.Now.ToString() + @"""}";
+                        logger.LogInformation("Sending test SSE event to {Count} clients", connectionManager.ConnectionCount);
+                        await connectionManager.SendEventToAllAsync("test-event", testData);
+                        logger.LogInformation("Test event sent successfully");
+                    }
+                    catch (Exception ex) {
+                        logger.LogError(ex, "Failed to send test SSE event");
+                    }
+                });
+                
+                return new { success = true, message = "Test SSE event sent" };
             });
             
             // Start the server

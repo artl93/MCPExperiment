@@ -150,50 +150,11 @@ namespace Microsoft.Extensions.AI.MCP.Server
             {
                 try
                 {
-                    // Read headers
-                    string? line;
-                    while ((line = await reader.ReadLineAsync()) != null)
-                    {
-                        if (string.IsNullOrEmpty(line))
-                        {
-                            // Empty line indicates end of headers
-                            break;
-                        }
-                        
-                        // Parse Content-Length header
-                        if (line.StartsWith("Content-Length:", StringComparison.OrdinalIgnoreCase))
-                        {
-                            if (int.TryParse(line.Substring("Content-Length:".Length).Trim(), out var length))
-                            {
-                                contentLength = length;
-                            }
-                        }
-                    }
+                    _logger.LogDebug("Waiting for message...");
+                    // Read the first line to get the content length
+                    var message = await reader.ReadLineAsync();
                     
-                    // Check if we have a valid content length
-                    if (contentLength <= 0)
-                    {
-                        _logger.LogWarning("Invalid Content-Length header");
-                        continue;
-                    }
-                    
-                    // Read message content
-                    var buffer = new char[contentLength];
-                    var bytesRead = 0;
-                    
-                    while (bytesRead < contentLength)
-                    {
-                        var read = await reader.ReadAsync(buffer, bytesRead, contentLength - bytesRead);
-                        if (read == 0)
-                        {
-                            break; // EOF
-                        }
-                        bytesRead += read;
-                    }
-                    
-                    // Convert buffer to string
-                    var message = new string(buffer, 0, bytesRead);
-                    
+                   
                     _logger.LogDebug("Received message: {Message}", message);
                     
                     // Process message

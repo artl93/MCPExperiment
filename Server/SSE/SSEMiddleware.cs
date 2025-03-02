@@ -44,6 +44,12 @@ namespace Microsoft.Extensions.AI.MCP.Server.SSE
                 // Set up response for SSE
                 context.Response.StatusCode = 200;
                 
+                // Disable response buffering to ensure events are sent immediately
+                // context.Response.Body.Flush();
+                
+                // Disable response buffering
+                context.Response.HttpContext.Features.Get<Microsoft.AspNetCore.Http.Features.IHttpResponseBodyFeature>()?.DisableBuffering();
+                
                 // Create a new SSE connection
                 using var connection = new SSEConnection(context.Response);
                 _connectionManager.AddConnection(connection);

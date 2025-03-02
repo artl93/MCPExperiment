@@ -4,7 +4,7 @@
 - `dotnet build` - Build the project
 - `dotnet build --configuration Release` - Build in release mode
 - `dotnet test` - Run all tests
-- `dotnet test --filter "FullyQualifiedName=Namespace.TestClass.TestMethod"` - Run single test
+- `dotnet test --filter "FullyQualifiedName=Microsoft.Extensions.MCP.Tests.MCPSchemaTests.TestAudioContentSerialization"` - Run single test
 
 ## Code Style Guidelines
 - **Naming**: PascalCase for types/members, camelCase for parameters/variables
@@ -17,4 +17,13 @@
 - **Design Patterns**: Follow standard JSON-RPC protocols and Microsoft Extension patterns
 
 ## Project Structure
-This library implements a Model Context Protocol (MCP) for client-server communication with AI models.
+This library implements a Model Context Protocol (MCP) for client-server communication with AI models. 
+The protocol supports various content types including text, images, and audio.
+
+## Test Samples
+JSON test samples are in the Microsoft.Extensions.MCP.Tests/Samples directory.
+They demonstrate proper format for:
+- Audio content
+- Prompt messages with audio
+- GetPromptResult with mixed content
+- CallToolResult with multiple content types

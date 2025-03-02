@@ -1,0 +1,14 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "The audio has been processed."
+    },
+    {
+      "type": "audio",
+      "data": "UHJvY2Vzc2VkIEF1ZGlv",
+      "mimeType": "audio/wav"
+    }
+  ],
+  "isError": false
+}

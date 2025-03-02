@@ -17,17 +17,17 @@ namespace Microsoft.Extensions.AI.MCP.Server
     public class MCPMessageProcessor : IMCPMessageProcessor
     {
         private readonly ILogger<MCPMessageProcessor> _logger;
-        private readonly IMCPServer _server;
+        private readonly IMCPServerInitializer _serverInitializer;
 
         /// <summary>
         /// Initializes a new instance of <see cref="MCPMessageProcessor"/>.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        /// <param name="server">The MCP server.</param>
-        public MCPMessageProcessor(ILogger<MCPMessageProcessor> logger, IMCPServer server)
+        /// <param name="serverInitializer">The MCP server initializer.</param>
+        public MCPMessageProcessor(ILogger<MCPMessageProcessor> logger, IMCPServerInitializer serverInitializer)
         {
             _logger = logger;
-            _server = server;
+            _serverInitializer = serverInitializer;
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Microsoft.Extensions.AI.MCP.Server
                 Params = request.Params
             };
             
-            var result = await _server.InitializeAsync(initRequest, cancellationToken);
+            var result = await _serverInitializer.InitializeAsync(initRequest, cancellationToken);
             
             return new JsonRpcResponse<InitializeResult>
             {

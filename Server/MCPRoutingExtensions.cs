@@ -306,16 +306,58 @@ namespace Microsoft.Extensions.AI.MCP.Server
 
         private static void UpdateServerCapabilities(IServiceProvider services)
         {
-            var options = services.GetRequiredService<IOptions<MCPServerOptions>>();
-            
-            if (options.Value.ServerCapabilities.Tools == null)
+            try
             {
-                options.Value.ServerCapabilities.Tools = new ServerToolsCapabilities();
+                var options = services.GetRequiredService<IOptions<MCPServerOptions>>();
+                
+                if (options.Value.ServerCapabilities.Tools == null)
+                {
+                    options.Value.ServerCapabilities.Tools = new ServerToolsCapabilities();
+                }
+    
+                if (options.Value.ServerCapabilities.Prompts == null)
+                {
+                    options.Value.ServerCapabilities.Prompts = new ServerPromptsCapabilities();
+                }
+                
+                // Update the available tools and prompts in the capabilities
+                if (options.Value.ServerCapabilities.Tools.AvailableTools != null)
+                {
+                    options.Value.ServerCapabilities.Tools.AvailableTools.Clear();
+                    foreach (var tool in _tools.Values)
+                    {
+                        options.Value.ServerCapabilities.Tools.AvailableTools.Add(tool);
+                    }
+                }
+                
+                if (options.Value.ServerCapabilities.Prompts.AvailablePrompts != null)
+                {
+                    options.Value.ServerCapabilities.Prompts.AvailablePrompts.Clear();
+                    foreach (var prompt in _prompts.Values)
+                    {
+                        options.Value.ServerCapabilities.Prompts.AvailablePrompts.Add(prompt);
+                    }
+                }
+                
+                // Try to get the server instance and directly update its capabilities if it exists
+                try
+                {
+                    var server = services.GetService<IMCPServer>();
+                    if (server != null)
+                    {
+                        // Server instance exists, it will use updated capabilities on next request
+                        Console.WriteLine($"Updated MCP Server capabilities: {_tools.Count} tools, {_prompts.Count} prompts");
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    // This is expected during startup before server is registered
+                    // The server will pick up the capabilities from options when it's created
+                }
             }
-
-            if (options.Value.ServerCapabilities.Prompts == null)
+            catch (Exception ex)
             {
-                options.Value.ServerCapabilities.Prompts = new ServerPromptsCapabilities();
+                Console.WriteLine($"Error updating server capabilities: {ex.Message}");
             }
         }
     }

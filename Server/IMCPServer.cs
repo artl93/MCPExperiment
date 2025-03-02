@@ -1,23 +1,14 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.AI.MCP.Initialization;
 
 namespace Microsoft.Extensions.AI.MCP.Server
 {
     /// <summary>
     /// Interface for MCP server implementations.
     /// </summary>
-    public interface IMCPServer
+    public interface IMCPServer : IMCPServerInitializer
     {
-        /// <summary>
-        /// Initializes the server with the specified client capabilities.
-        /// </summary>
-        /// <param name="request">The initialize request from the client.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The initialization result.</returns>
-        Task<InitializeResult> InitializeAsync(InitializeRequest request, CancellationToken cancellationToken = default);
-
         /// <summary>
         /// Processes a raw JSON-RPC message from the client.
         /// </summary>
@@ -37,6 +28,12 @@ namespace Microsoft.Extensions.AI.MCP.Server
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
         Task StartStdioAsync(CancellationToken cancellationToken = default);
+        
+        /// <summary>
+        /// Sends a demo notification for testing SSE functionality.
+        /// </summary>
+        /// <param name="message">The message to include in the notification.</param>
+        void SendDemoNotification(string message);
     }
 
     /// <summary>

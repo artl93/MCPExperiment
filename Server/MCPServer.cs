@@ -76,6 +76,10 @@ namespace Microsoft.Extensions.AI.MCP.Server
 
             _isInitialized = true;
             
+            _logger.LogInformation("MCP Server initialized with {ToolCount} tools and {PromptCount} prompts", 
+                _options.ServerCapabilities.Tools?.AvailableTools?.Count ?? 0,
+                _options.ServerCapabilities.Prompts?.AvailablePrompts?.Count ?? 0);
+            
             return Task.FromResult(result);
         }
 
@@ -186,7 +190,28 @@ namespace Microsoft.Extensions.AI.MCP.Server
         public void SendNotification(object notification)
         {
             var json = _protocolHandler.SerializeMessage(notification);
+            _logger.LogDebug("Server sending notification: {NotificationType}", notification.GetType().Name);
             NotificationReady?.Invoke(this, new ServerNotificationEventArgs(json));
+        }
+        
+        /// <summary>
+        /// Sends a demo notification for testing SSE functionality.
+        /// </summary>
+        /// <param name="message">The message to include in the notification.</param>
+        public void SendDemoNotification(string message)
+        {
+            var notification = new JsonRpcNotification<object>
+            {
+                JsonRpc = "2.0",
+                Method = "notifications/demo",
+                Params = new 
+                { 
+                    message = message,
+                    timestamp = DateTime.UtcNow
+                }
+            };
+            
+            SendNotification(notification);
         }
 
         private void UpdateServerCapabilities()

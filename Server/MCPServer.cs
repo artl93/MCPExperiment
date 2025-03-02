@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.AI.MCP.Capabilities;
 using Microsoft.Extensions.AI.MCP.Initialization;
 using Microsoft.Extensions.AI.MCP.Messages;
+using Microsoft.Extensions.AI.MCP.Server.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -53,6 +55,9 @@ namespace Microsoft.Extensions.AI.MCP.Server
         public Task<InitializeResult> InitializeAsync(InitializeRequest request, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Initializing MCP server with protocol version {Version}", request.Params.ProtocolVersion);
+            
+            // Update server capabilities with registered tools and prompts
+            UpdateServerCapabilities();
             
             // Merge experimental capabilities if any
             if (_options.ExperimentalCapabilities.Count > 0 && _options.ServerCapabilities.Experimental != null)
@@ -182,6 +187,57 @@ namespace Microsoft.Extensions.AI.MCP.Server
         {
             var json = _protocolHandler.SerializeMessage(notification);
             NotificationReady?.Invoke(this, new ServerNotificationEventArgs(json));
+        }
+
+        private void UpdateServerCapabilities()
+        {
+            // Initialize capabilities if not already set
+            if (_options.ServerCapabilities.Tools == null)
+            {
+                _options.ServerCapabilities.Tools = new ServerToolsCapabilities();
+            }
+
+            if (_options.ServerCapabilities.Prompts == null)
+            {
+                _options.ServerCapabilities.Prompts = new ServerPromptsCapabilities();
+            }
+            
+            // Get registered tools and prompts
+            var tools = MCPRoutingExtensions.GetTools();
+            var prompts = MCPRoutingExtensions.GetPrompts();
+            
+            // Update tool capabilities
+            var toolsList = new List<Dictionary<string, object>>();
+            foreach (var tool in tools.Values)
+            {
+                var toolInfo = new Dictionary<string, object>
+                {
+                    { "name", tool.Name },
+                    { "description", tool.Description },
+                    { "parameters", tool.Parameters }
+                };
+                
+                toolsList.Add(toolInfo);
+            }
+            
+            _options.ServerCapabilities.Tools.AvailableTools = toolsList;
+            
+            // Update prompt capabilities
+            var promptsList = new List<Dictionary<string, object>>();
+            foreach (var prompt in prompts.Values)
+            {
+                var promptInfo = new Dictionary<string, object>
+                {
+                    { "name", prompt.Name },
+                    { "description", prompt.Description },
+                    { "category", prompt.Category },
+                    { "parameters", prompt.Parameters }
+                };
+                
+                promptsList.Add(promptInfo);
+            }
+            
+            _options.ServerCapabilities.Prompts.AvailablePrompts = promptsList;
         }
     }
 }

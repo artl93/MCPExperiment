@@ -1,0 +1,12 @@
+{
+    "jsonrpc": "2.0",
+    "id": 3,
+    "method": "get_prompt",
+    "params": {
+        "promptName": "greeting",
+        "parameters": {
+            "name": "John",
+            "formal": true
+        }
+    }
+}

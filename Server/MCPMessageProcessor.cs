@@ -1,9 +1,12 @@
 using System;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.AI.MCP.Annotations;
 using Microsoft.Extensions.AI.MCP.Initialization;
 using Microsoft.Extensions.AI.MCP.Messages;
 using Microsoft.Extensions.AI.MCP.Models;
+using Microsoft.Extensions.AI.MCP.Server.Models;
 using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Extensions.AI.MCP.Server
@@ -106,36 +109,176 @@ namespace Microsoft.Extensions.AI.MCP.Server
             return Task.FromResult<object?>(null);
         }
 
-        private Task<object> HandleGetPromptRequestAsync(JsonRpcRequest<GetPromptParams> request, CancellationToken cancellationToken)
+        /// <summary>
+        /// Handles a get_prompt request.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The response.</returns>
+        protected virtual async Task<object> HandleGetPromptRequestAsync(JsonRpcRequest<GetPromptParams> request, CancellationToken cancellationToken)
         {
-            // This would be implemented by classes that extend this base processor
-            var error = new JsonRpcError
-            {
-                Code = -32601,
-                Message = "Method not implemented: get_prompt"
-            };
+            var promptName = request.Params.PromptName;
+            var prompts = MCPRoutingExtensions.GetPrompts();
             
-            return Task.FromResult<object>(new JsonRpcResponse<object>
+            if (!prompts.TryGetValue(promptName, out var promptDefinition))
             {
-                Id = request.Id,
-                Error = error
-            });
+                return new JsonRpcResponse<object>
+                {
+                    Id = request.Id,
+                    Error = new JsonRpcError
+                    {
+                        Code = -32602,
+                        Message = $"Prompt not found: {promptName}"
+                    }
+                };
+            }
+
+            try
+            {
+                // Deserialize parameters from JsonElement
+                Type parameterType = promptDefinition.Handler.Method.GetParameters()[0].ParameterType;
+                object? parameters = null;
+                
+                if (request.Params.Parameters != null)
+                {
+                    var paramJson = JsonSerializer.Serialize(request.Params.Parameters);
+                    parameters = JsonSerializer.Deserialize(paramJson, parameterType);
+                }
+                else
+                {
+                    // Create default instance
+                    parameters = Activator.CreateInstance(parameterType);
+                }
+                
+                // Invoke the handler
+                var handlerType = promptDefinition.Handler.GetType();
+                var invokeMethod = handlerType.GetMethod("Invoke");
+                
+                dynamic handler = promptDefinition.Handler;
+                var resultTask = handler(parameters);
+                var result = await resultTask;
+                
+                // Create proper response
+                return new JsonRpcResponse<GetPromptResult>
+                {
+                    Id = request.Id,
+                    Result = new GetPromptResult
+                    {
+                        Prompt = new Prompt
+                        {
+                            Messages = result as PromptMessage[] ?? Array.Empty<PromptMessage>()
+                        }
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error executing prompt {Name}", promptName);
+                return new JsonRpcResponse<object>
+                {
+                    Id = request.Id,
+                    Error = new JsonRpcError
+                    {
+                        Code = -32000,
+                        Message = "Error executing prompt",
+                        Data = ex.Message
+                    }
+                };
+            }
         }
 
-        private Task<object> HandleCallToolRequestAsync(JsonRpcRequest<CallToolRequest> request, CancellationToken cancellationToken)
+        /// <summary>
+        /// Handles a call_tool request.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The response.</returns>
+        protected virtual async Task<object> HandleCallToolRequestAsync(JsonRpcRequest<CallToolRequest> request, CancellationToken cancellationToken)
         {
-            // This would be implemented by classes that extend this base processor
-            var error = new JsonRpcError
-            {
-                Code = -32601,
-                Message = "Method not implemented: call_tool"
-            };
+            var toolName = request.Params.Name;
+            var tools = MCPRoutingExtensions.GetTools();
             
-            return Task.FromResult<object>(new JsonRpcResponse<object>
+            if (!tools.TryGetValue(toolName, out var toolDefinition))
             {
-                Id = request.Id,
-                Error = error
-            });
+                return new JsonRpcResponse<object>
+                {
+                    Id = request.Id,
+                    Error = new JsonRpcError
+                    {
+                        Code = -32602,
+                        Message = $"Tool not found: {toolName}"
+                    }
+                };
+            }
+
+            try
+            {
+                // Deserialize parameters from JsonElement
+                Type parameterType = toolDefinition.Handler.Method.GetParameters()[0].ParameterType;
+                object? parameters = null;
+                
+                if (request.Params.Arguments != null)
+                {
+                    var paramJson = JsonSerializer.Serialize(request.Params.Arguments);
+                    parameters = JsonSerializer.Deserialize(paramJson, parameterType);
+                }
+                else
+                {
+                    // Create default instance
+                    parameters = Activator.CreateInstance(parameterType);
+                }
+                
+                // Invoke the handler
+                if (toolDefinition.IsSync)
+                {
+                    // Synchronous tool
+                    dynamic handler = toolDefinition.Handler;
+                    var result = handler(parameters);
+                    
+                    // Create proper response
+                    return new JsonRpcResponse<CallToolResult>
+                    {
+                        Id = request.Id,
+                        Result = new CallToolResult
+                        {
+                            // Create a TextContent result from the tool result
+                            Content = new TextContent { Text = result?.ToString() ?? string.Empty }
+                        }
+                    };
+                }
+                else
+                {
+                    // Asynchronous tool
+                    dynamic handler = toolDefinition.Handler;
+                    var resultTask = handler(parameters);
+                    var result = await resultTask;
+                    
+                    // Create proper response
+                    return new JsonRpcResponse<CallToolResult>
+                    {
+                        Id = request.Id,
+                        Result = new CallToolResult
+                        {
+                            // Create a TextContent result from the tool result
+                            Content = new TextContent { Text = result?.ToString() ?? string.Empty }
+                        }
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error executing tool {Name}", toolName);
+                return new JsonRpcResponse<object>
+                {
+                    Id = request.Id,
+                    Error = new JsonRpcError
+                    {
+                        Code = -32000,
+                        Message = "Error executing tool",
+                        Data = ex.Message
+                    }
+                };
+            }
         }
 
         private object CreateMethodNotFoundError(object message)

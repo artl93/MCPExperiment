@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Text.Json;
 using Microsoft.Extensions.AI.MCP.Annotations;
 using Microsoft.Extensions.AI.MCP.Messages;
@@ -10,6 +12,34 @@ namespace Microsoft.Extensions.MCP.Tests
 {
     public class MCPSchemaTests
     {
+        // Helper method to load JSON files from the Samples directory
+        private string LoadJsonSample(string sampleFileName)
+        {
+            try
+            {
+                // Try to load from the output directory first
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "Samples", sampleFileName);
+                if (File.Exists(path))
+                {
+                    return File.ReadAllText(path);
+                }
+
+                // If that fails, try relative to the executing assembly's location
+                var assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                path = Path.Combine(assemblyLocation!, "Samples", sampleFileName);
+                if (File.Exists(path))
+                {
+                    return File.ReadAllText(path);
+                }
+
+                throw new FileNotFoundException($"Could not find sample file: {sampleFileName}", sampleFileName);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error loading JSON sample {sampleFileName}: {ex}");
+                throw;
+            }
+        }
         [Fact]
         public void TestAudioContentSerialization()
         {
@@ -149,20 +179,19 @@ namespace Microsoft.Extensions.MCP.Tests
         [Fact]
         public void ValidateJsonSamples()
         {
-            // Define the sample files to validate with full paths
-            var basePath = "/Users/artleonard/src/Microsoft.Extensions.ModelContextProtocol/Microsoft.Extensions.MCP.Tests/";
+            // Define the sample files to validate
             var sampleFiles = new[]
             {
-                basePath + "Samples/audio-content.json",
-                basePath + "Samples/prompt-message-audio.json",
-                basePath + "Samples/get-prompt-result.json",
-                basePath + "Samples/call-tool-result.json"
+                "audio-content.json",
+                "prompt-message-audio.json",
+                "get-prompt-result.json",
+                "call-tool-result.json"
             };
 
             // Load and parse each sample file
             foreach (var sampleFile in sampleFiles)
             {
-                var json = System.IO.File.ReadAllText(sampleFile);
+                var json = LoadJsonSample(sampleFile);
                 var jsonDoc = JsonDocument.Parse(json);
                 Assert.NotNull(jsonDoc);
             }
@@ -171,9 +200,8 @@ namespace Microsoft.Extensions.MCP.Tests
         [Fact]
         public void DeserializeAudioContentFromJson()
         {
-            // Load the JSON sample with full path
-            var basePath = "/Users/artleonard/src/Microsoft.Extensions.ModelContextProtocol/Microsoft.Extensions.MCP.Tests/";
-            var json = System.IO.File.ReadAllText(basePath + "Samples/audio-content.json");
+            // Load the JSON sample
+            var json = LoadJsonSample("audio-content.json");
             
             // Deserialize into our model
             var audioContent = JsonSerializer.Deserialize<AudioContent>(json, 
@@ -191,8 +219,7 @@ namespace Microsoft.Extensions.MCP.Tests
         {
             // Need a custom deserializer for production use
             // This test just validates the JSON structure
-            var basePath = "/Users/artleonard/src/Microsoft.Extensions.ModelContextProtocol/Microsoft.Extensions.MCP.Tests/";
-            var json = System.IO.File.ReadAllText(basePath + "Samples/prompt-message-audio.json");
+            var json = LoadJsonSample("prompt-message-audio.json");
             var jsonDoc = JsonDocument.Parse(json);
             
             // Validate the structure manually
@@ -210,8 +237,7 @@ namespace Microsoft.Extensions.MCP.Tests
         {
             // Need a custom deserializer for production use
             // This test just validates the JSON structure
-            var basePath = "/Users/artleonard/src/Microsoft.Extensions.ModelContextProtocol/Microsoft.Extensions.MCP.Tests/";
-            var json = System.IO.File.ReadAllText(basePath + "Samples/get-prompt-result.json");
+            var json = LoadJsonSample("get-prompt-result.json");
             var jsonDoc = JsonDocument.Parse(json);
             
             // Validate the structure manually
@@ -242,8 +268,7 @@ namespace Microsoft.Extensions.MCP.Tests
         {
             // Need a custom deserializer for production use
             // This test just validates the JSON structure
-            var basePath = "/Users/artleonard/src/Microsoft.Extensions.ModelContextProtocol/Microsoft.Extensions.MCP.Tests/";
-            var json = System.IO.File.ReadAllText(basePath + "Samples/call-tool-result.json");
+            var json = LoadJsonSample("call-tool-result.json");
             var jsonDoc = JsonDocument.Parse(json);
             
             // Validate the structure manually

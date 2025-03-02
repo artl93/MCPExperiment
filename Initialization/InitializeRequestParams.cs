@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.MCP.Capabilities;
+using Microsoft.Extensions.AI.MCP.Capabilities;
 
-namespace Microsoft.Extensions.MCP.Initialization
+namespace Microsoft.Extensions.AI.MCP.Initialization
 {
     /// <summary>
     /// Parameters for the initialize request sent from client to server.

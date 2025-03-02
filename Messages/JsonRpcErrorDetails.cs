@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.MCP.Messages
+namespace Microsoft.Extensions.AI.MCP.Messages
 {
     /// <summary>
     /// Details about an error that occurred during a JSON-RPC request.

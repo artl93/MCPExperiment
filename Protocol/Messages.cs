@@ -1,7 +1,7 @@
 using System.Net.Mime;
-using Microsoft.Extensions.MCP.Annotations;
+using Microsoft.Extensions.AI.MCP.Annotations;
 
-namespace Microsoft.Extensions.MCP.Protocol
+namespace Microsoft.Extensions.AI.MCP.Protocol
 {
     // ...existing code...
 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.MCP.Messages
+namespace Microsoft.Extensions.AI.MCP.Messages
 {
     /// <summary>
     /// Base class for all result types returned from requests.

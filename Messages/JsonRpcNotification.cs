@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.MCP.Messages
+namespace Microsoft.Extensions.AI.MCP.Messages
 {
     /// <summary>
     /// Represents a JSON-RPC notification which does not expect a response.

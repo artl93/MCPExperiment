@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.MCP.Union;
+using Microsoft.Extensions.AI.MCP.Union;
 
-namespace Microsoft.Extensions.MCP.Messages
+namespace Microsoft.Extensions.AI.MCP.Messages
 {
     /// <summary>
     /// Represents a JSON-RPC error response.

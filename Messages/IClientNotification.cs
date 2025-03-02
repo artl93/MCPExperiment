@@ -1,5 +1,5 @@
 
-namespace Microsoft.Extensions.MCP.Messages
+namespace Microsoft.Extensions.AI.MCP.Messages
 {
     /// <summary>
     /// Marker interface for client notification types.

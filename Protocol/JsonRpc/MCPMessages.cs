@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Extensions.MCP.Protocol.JsonRpc
+namespace Microsoft.Extensions.AI.MCP.Protocol.JsonRpc
 {
     // ...existing code...
 

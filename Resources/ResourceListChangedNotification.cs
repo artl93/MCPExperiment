@@ -1,6 +1,6 @@
-using Microsoft.Extensions.MCP.Messages;
+using Microsoft.Extensions.AI.MCP.Messages;
 
-namespace Microsoft.Extensions.MCP.Resources
+namespace Microsoft.Extensions.AI.MCP.Resources
 {
     /// <summary>
     /// An optional notification from the server to the client, informing it that the list of resources

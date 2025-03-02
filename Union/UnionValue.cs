@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.MCP.Union
+namespace Microsoft.Extensions.AI.MCP.Union
 {
     /// <summary>
     /// Represents a union type that can be either a string or a number.

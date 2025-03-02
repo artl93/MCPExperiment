@@ -1,6 +1,6 @@
-using Microsoft.Extensions.MCP.Messages;
+using Microsoft.Extensions.AI.MCP.Messages;
 
-namespace Microsoft.Extensions.MCP.Initialization
+namespace Microsoft.Extensions.AI.MCP.Initialization
 {
     /// <summary>
     /// A ping, issued by either the server or the client, to check that the other party is still alive.

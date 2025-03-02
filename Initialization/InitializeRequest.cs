@@ -1,6 +1,6 @@
-using Microsoft.Extensions.MCP.Messages;
+using Microsoft.Extensions.AI.MCP.Messages;
 
-namespace Microsoft.Extensions.MCP.Initialization
+namespace Microsoft.Extensions.AI.MCP.Initialization
 {
     /// <summary>
     /// This request is sent from the client to the server when it first connects, asking it to begin initialization.

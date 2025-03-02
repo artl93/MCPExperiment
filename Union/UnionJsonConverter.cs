@@ -2,7 +2,7 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.MCP.Union
+namespace Microsoft.Extensions.AI.MCP.Union
 {
     /// <summary>
     /// JSON converter for <see cref="UnionValue"/> that handles serialization and deserialization 

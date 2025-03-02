@@ -1,6 +1,6 @@
-using Microsoft.Extensions.MCP.Messages;
+using Microsoft.Extensions.AI.MCP.Messages;
 
-namespace Microsoft.Extensions.MCP.Initialization
+namespace Microsoft.Extensions.AI.MCP.Initialization
 {
     /// <summary>
     /// This notification is sent from the client to the server after initialization has finished.

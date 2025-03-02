@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.MCP.Pagination
+namespace Microsoft.Extensions.AI.MCP.Pagination
 {
     /// <summary>
     /// A result that supports pagination.

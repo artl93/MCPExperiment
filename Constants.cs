@@ -1,4 +1,4 @@
-namespace Microsoft.Extensions.MCP
+namespace Microsoft.Extensions.AI.MCP
 {
     public static class Constants
     {

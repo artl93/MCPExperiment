@@ -1,6 +1,6 @@
-using Microsoft.Extensions.MCP.Messages;
+using Microsoft.Extensions.AI.MCP.Messages;
 
-namespace Microsoft.Extensions.MCP.Resources
+namespace Microsoft.Extensions.AI.MCP.Resources
 {
     /// <summary>
     /// Sent from the client to the server, to read a specific resource URI.

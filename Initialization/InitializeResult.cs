@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.MCP.Capabilities;
-using Microsoft.Extensions.MCP.Messages;
+using Microsoft.Extensions.AI.MCP.Capabilities;
+using Microsoft.Extensions.AI.MCP.Messages;
 
-namespace Microsoft.Extensions.MCP.Initialization
+namespace Microsoft.Extensions.AI.MCP.Initialization
 {
     /// <summary>
     /// After receiving an initialize request from the client, the server sends this response.

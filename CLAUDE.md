@@ -1,4 +1,4 @@
-# Microsoft.Extensions.MCP Guidelines
+# Microsoft.Extensions.AI.MCP Guidelines
 
 ## Build Commands
 - `dotnet build` - Build the project

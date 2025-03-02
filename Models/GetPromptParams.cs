@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.MCP.Models
+namespace Microsoft.Extensions.AI.MCP.Models
 {
     /// <summary>
     /// Parameters for GetPromptRequest including prompt name and arguments.

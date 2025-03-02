@@ -1,4 +1,4 @@
-namespace Microsoft.Extensions.MCP.Models
+namespace Microsoft.Extensions.AI.MCP.Models
 {
     /// <summary>
     /// Represents optional annotations for audience and priority.

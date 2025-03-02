@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.MCP.Messages;
+using Microsoft.Extensions.AI.MCP.Messages;
 
-namespace Microsoft.Extensions.MCP.Resources
+namespace Microsoft.Extensions.AI.MCP.Resources
 {
     /// <summary>
     /// The server's response to a resources/read request from the client.

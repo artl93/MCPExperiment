@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.MCP.Resources
+namespace Microsoft.Extensions.AI.MCP.Resources
 {
     /// <summary>
     /// Parameters for a request to read a specific resource URI.

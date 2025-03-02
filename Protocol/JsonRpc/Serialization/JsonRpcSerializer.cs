@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.MCP.Protocol.JsonRpc.Serialization
+namespace Microsoft.Extensions.AI.MCP.Protocol.JsonRpc.Serialization
 {
     public static class JsonRpcSerializer
     {

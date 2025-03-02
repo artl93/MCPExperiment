@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.MCP.Capabilities
+namespace Microsoft.Extensions.AI.MCP.Capabilities
 {
     /// <summary>
     /// Capabilities related to resources that the server supports.

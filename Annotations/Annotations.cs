@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.MCP.Annotations
+namespace Microsoft.Extensions.AI.MCP.Annotations
 {
     /// <summary>
     /// Metadata that can be applied to content.

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.MCP.Annotations
+namespace Microsoft.Extensions.AI.MCP.Annotations
 {
     /// <summary>
     /// Base class for resource contents.

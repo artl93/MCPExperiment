@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.ModelContextProtocol.Union;
+using Microsoft.Extensions.MCP.Union;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Messages
+namespace Microsoft.Extensions.MCP.Messages
 {
     /// <summary>
     /// Represents a JSON-RPC request that expects a response.

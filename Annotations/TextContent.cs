@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Annotations
+namespace Microsoft.Extensions.MCP.Annotations
 {
     /// <summary>
     /// Represents text content in the context.

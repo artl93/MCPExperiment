@@ -1,5 +1,5 @@
 
-namespace Microsoft.Extensions.ModelContextProtocol.Messages
+namespace Microsoft.Extensions.MCP.Messages
 {
     /// <summary>
     /// Marker interface for client request types.

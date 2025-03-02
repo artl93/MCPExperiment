@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.ModelContextProtocol.Union;
+using Microsoft.Extensions.MCP.Union;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Progress
+namespace Microsoft.Extensions.MCP.Progress
 {
     /// <summary>
     /// Parameters for a progress notification.

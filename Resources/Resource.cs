@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Resources
+namespace Microsoft.Extensions.MCP.Resources
 {
     /// <summary>
     /// A known resource that the server is capable of reading.

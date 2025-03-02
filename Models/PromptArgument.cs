@@ -1,4 +1,4 @@
-namespace Microsoft.Extensions.ModelContextProtocol.Models
+namespace Microsoft.Extensions.MCP.Models
 {
     /// <summary>
     /// Describes an argument accepted by a prompt.

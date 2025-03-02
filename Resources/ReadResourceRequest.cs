@@ -1,6 +1,6 @@
-using Microsoft.Extensions.ModelContextProtocol.Messages;
+using Microsoft.Extensions.MCP.Messages;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Resources
+namespace Microsoft.Extensions.MCP.Resources
 {
     /// <summary>
     /// Sent from the client to the server, to read a specific resource URI.

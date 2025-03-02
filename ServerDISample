@@ -1,0 +1,27 @@
+using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Microsoft.Extensions.MCP
+{
+    public interface IJsonRpcHandler
+    {
+        Task HandleAsync(JsonRpcMessage message);
+    }
+
+    public class JsonRpcHandler : IJsonRpcHandler
+    {
+        public Task HandleAsync(JsonRpcMessage message)
+        {
+            return Task.CompletedTask;
+        }
+    }
+
+    public static class ServiceCollectionExtensions
+    {
+        public static IServiceCollection AddJsonRpc(this IServiceCollection services)
+        {
+            services.AddTransient<IJsonRpcHandler, JsonRpcHandler>();
+            return services;
+        }
+    }
+}

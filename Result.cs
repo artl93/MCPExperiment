@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.ModelContextProtocol
+namespace Microsoft.Extensions.MCP
 {
     /// <summary>
     /// Base class for all result objects in the Model Context Protocol.

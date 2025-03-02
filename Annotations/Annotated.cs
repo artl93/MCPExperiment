@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Annotations
+namespace Microsoft.Extensions.MCP.Annotations
 {
     /// <summary>
     /// Base class for objects that can have annotations.

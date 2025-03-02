@@ -1,6 +1,6 @@
-using Microsoft.Extensions.ModelContextProtocol.Messages;
+using Microsoft.Extensions.MCP.Messages;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Initialization
+namespace Microsoft.Extensions.MCP.Initialization
 {
     /// <summary>
     /// This notification is sent from the client to the server after initialization has finished.

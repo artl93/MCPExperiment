@@ -1,6 +1,6 @@
-using Microsoft.Extensions.ModelContextProtocol.Messages;
+using Microsoft.Extensions.MCP.Messages;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Resources
+namespace Microsoft.Extensions.MCP.Resources
 {
     /// <summary>
     /// An optional notification from the server to the client, informing it that the list of resources

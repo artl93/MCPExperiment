@@ -1,10 +1,10 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.ModelContextProtocol.Annotations;
-using Microsoft.Extensions.ModelContextProtocol.Protocol;
+using Microsoft.Extensions.MCP.Annotations;
+using Microsoft.Extensions.MCP.Protocol;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Protocol.JsonRpc.Serialization
+namespace Microsoft.Extensions.MCP.Protocol.JsonRpc.Serialization
 {
     internal class SamplingMessageConverter : JsonConverter<SamplingMessage>
     {

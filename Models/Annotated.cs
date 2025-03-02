@@ -1,4 +1,4 @@
-namespace Microsoft.Extensions.ModelContextProtocol.Models
+namespace Microsoft.Extensions.MCP.Models
 {
     /// <summary>
     /// Base class that includes optional client annotations.

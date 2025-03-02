@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Annotations
+namespace Microsoft.Extensions.MCP.Annotations
 {
     /// <summary>
     /// Represents resource contents stored as a binary blob.

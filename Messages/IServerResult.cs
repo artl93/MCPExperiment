@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.ModelContextProtocol;
+using Microsoft.Extensions.MCP;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Messages
+namespace Microsoft.Extensions.MCP.Messages
 {
     /// <summary>
     /// Interface for all result objects that can be returned from the server to the client.

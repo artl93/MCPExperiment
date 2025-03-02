@@ -1,6 +1,6 @@
-using Microsoft.Extensions.ModelContextProtocol.Messages;
+using Microsoft.Extensions.MCP.Messages;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Initialization
+namespace Microsoft.Extensions.MCP.Initialization
 {
     /// <summary>
     /// A ping, issued by either the server or the client, to check that the other party is still alive.

@@ -1,7 +1,7 @@
 using System.Net.Mime;
-using Microsoft.Extensions.ModelContextProtocol.Annotations;
+using Microsoft.Extensions.MCP.Annotations;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Protocol
+namespace Microsoft.Extensions.MCP.Protocol
 {
     // ...existing code...
 

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Capabilities
+namespace Microsoft.Extensions.MCP.Capabilities
 {
     /// <summary>
     /// Describes the name and version of an MCP implementation.

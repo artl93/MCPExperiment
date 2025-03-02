@@ -1,6 +1,6 @@
-using Microsoft.Extensions.ModelContextProtocol.Messages;
+using Microsoft.Extensions.MCP.Messages;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Progress
+namespace Microsoft.Extensions.MCP.Progress
 {
     /// <summary>
     /// An out-of-band notification used to inform the receiver of a progress update for a long-running request.

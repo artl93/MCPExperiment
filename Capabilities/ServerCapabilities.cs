@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Capabilities
+namespace Microsoft.Extensions.MCP.Capabilities
 {
     /// <summary>
     /// Capabilities that a server may support. Known capabilities are defined here, in this schema, 

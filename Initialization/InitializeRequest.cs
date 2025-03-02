@@ -1,6 +1,6 @@
-using Microsoft.Extensions.ModelContextProtocol.Messages;
+using Microsoft.Extensions.MCP.Messages;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Initialization
+namespace Microsoft.Extensions.MCP.Initialization
 {
     /// <summary>
     /// This request is sent from the client to the server when it first connects, asking it to begin initialization.

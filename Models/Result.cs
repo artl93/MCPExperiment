@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Models
+namespace Microsoft.Extensions.MCP.Models
 {
     /// <summary>
     /// Base JSON-RPC result.

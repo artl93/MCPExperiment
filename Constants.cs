@@ -1,4 +1,4 @@
-namespace Microsoft.Extensions.ModelContextProtocol
+namespace Microsoft.Extensions.MCP
 {
     public static class Constants
     {

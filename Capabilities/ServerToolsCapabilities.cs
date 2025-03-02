@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Microsoft.Extensions.ModelContextProtocol.Capabilities
+namespace Microsoft.Extensions.MCP.Capabilities
 {
     /// <summary>
     /// Capabilities related to tools that the server supports.

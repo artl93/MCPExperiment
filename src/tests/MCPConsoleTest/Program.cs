@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using MCP;
+using Microsoft.Extensions.AI.MCP.TestApp;
 
 namespace MCPConsoleTest
 {

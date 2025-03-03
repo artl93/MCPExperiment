@@ -10,7 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Microsoft.Extensions.MCP.csproj" />
+    <ProjectReference Include="..\..\Microsoft.Etensions.AI.MCP\Microsoft.Extensions.AI.MCP.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SharedImplementations.cs" Link="SharedImplementations.cs" />
+    <Compile Include="..\SharedModels.cs" Link="SharedModels.cs" />
   </ItemGroup>
 
 </Project>

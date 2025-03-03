@@ -1,5 +1,5 @@
 # Contributing to MCP Experiment
-Thank you for your interest in contributing to Microsoft.Extensions.ModelContextProtocol! This document provides guidelines and instructions for contributing to this project.
+Thank you for your interest in contributing to MCP Experiment! This document provides guidelines and instructions for contributing to this project.
 
 ## Code of Conduct
 

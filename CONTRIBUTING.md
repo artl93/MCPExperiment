@@ -74,4 +74,4 @@ The maintainers will handle the release process, including:
 
 ## License
 
-By contributing to Microsoft.Extensions.ModelContextProtocol, you agree that your contributions will be licensed under the project's MIT license.
+By contributing to MCP Experiment, you agree that your contributions will be licensed under the project's MIT license.

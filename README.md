@@ -1,10 +1,10 @@
-# Microsoft.Extensions.ModelContextProtocol
+# MCP Experiment
 
 A .NET implementation of the Model Context Protocol (MCP) for client-server communication with AI models.
 
 ## Overview
 
-Microsoft.Extensions.ModelContextProtocol provides a standardized communication protocol between client applications and AI model services. It's built on JSON-RPC 2.0 and supports various content types including text, images, and audio.
+MCP provides a standardized communication protocol between client applications and AI model services. It's built on JSON-RPC 2.0 and supports various content types including text, images, and audio.
 
 ## Features
 
@@ -16,12 +16,6 @@ Microsoft.Extensions.ModelContextProtocol provides a standardized communication 
 - **Resource Handling**: Template-based resource management
 
 ## Getting Started
-
-### Installation
-
-```bash
-dotnet add package Microsoft.Extensions.AI.MCP
-```
 
 ### Basic Usage
 

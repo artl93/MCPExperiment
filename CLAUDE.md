@@ -1,4 +1,4 @@
-# Microsoft.Extensions.AI.MCP Guidelines
+# MCPExperiment Guidelines
 
 ## Build Commands
 - `dotnet build` - Build the project

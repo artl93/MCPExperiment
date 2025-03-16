@@ -4,13 +4,13 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <RootNamespace>Microsoft.Extensions.AI.MCP.TestApp.StdioMCP</RootNamespace>
+    <RootNamespace>Microsoft.MCP.TestApp.StdioMCP</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Microsoft.Etensions.AI.MCP\Microsoft.Extensions.AI.MCP.csproj" />
+    <ProjectReference Include="..\..\Microsoft.MCP\Microsoft.MCP.csproj" />
   </ItemGroup>
 
   <ItemGroup>

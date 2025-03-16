@@ -2,7 +2,7 @@
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Extensions.AI.MCP", "src\Microsoft.Etensions.AI.MCP\Microsoft.Extensions.AI.MCP.csproj", "{093164DA-20C2-EEC5-7574-A663458EAE2C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.MCP", "src\Microsoft.MCP\Microsoft.MCP.csproj", "{093164DA-20C2-EEC5-7574-A663458EAE2C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerDISample", "src\tests\ServerDISample\ServerDISample.csproj", "{A6BDDFF5-0C08-4D1D-A6A8-A1CEEE4829CF}"
 EndProject
@@ -13,6 +13,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCPConsoleTest", "src\tests\MCPConsoleTest\MCPConsoleTest.csproj", "{EFAC2AB4-D41C-4D5A-8BB4-2D2B60D59BBD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCP", "src\MCP\MCP.csproj", "{A3D9FF0D-1CB5-43F0-A645-E7E16A3483D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCPConversationTest", "src\tests\MCPConversationTest\MCPConversationTest.csproj", "{B456BEF2-8942-4D47-97BA-FE2FD968F23A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,10 @@ Global
 		{A3D9FF0D-1CB5-43F0-A645-E7E16A3483D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3D9FF0D-1CB5-43F0-A645-E7E16A3483D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3D9FF0D-1CB5-43F0-A645-E7E16A3483D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B456BEF2-8942-4D47-97BA-FE2FD968F23A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B456BEF2-8942-4D47-97BA-FE2FD968F23A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B456BEF2-8942-4D47-97BA-FE2FD968F23A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B456BEF2-8942-4D47-97BA-FE2FD968F23A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

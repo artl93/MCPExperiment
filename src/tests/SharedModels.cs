@@ -1,8 +1,8 @@
-using Microsoft.Extensions.AI.MCP.Annotations;
-using Microsoft.Extensions.AI.MCP.Models;
-using Microsoft.Extensions.AI.MCP.Server.Attributes;
+using Microsoft.MCP.Annotations;
+using Microsoft.MCP.Models;
+using Microsoft.MCP.Server.Attributes;
 
-namespace Microsoft.Extensions.AI.MCP.TestApp
+namespace Microsoft.MCP.TestApp
 {
     // Data models for tools and prompts
     public class WeatherRequest

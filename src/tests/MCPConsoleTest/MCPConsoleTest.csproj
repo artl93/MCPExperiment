@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../Microsoft.Etensions.AI.MCP/Microsoft.Extensions.AI.MCP.csproj" />
+    <ProjectReference Include="../../Microsoft.MCP/Microsoft.MCP.csproj" />
     <ProjectReference Include="../../MCP/MCP.csproj" />
   </ItemGroup>
 

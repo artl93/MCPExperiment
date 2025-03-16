@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Microsoft.Extensions.AI.MCP</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>    
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Microsoft.Extensions.MCP.Tests\**" />
+    <EmbeddedResource Remove="Microsoft.Extensions.MCP.Tests\**" />
+    <None Remove="Microsoft.Extensions.MCP.Tests\**" />
+    <Compile Remove="ServerDISample\**" />
+    <EmbeddedResource Remove="ServerDISample\**" />
+    <None Remove="ServerDISample\**" />
+  </ItemGroup>
+
+</Project>

@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.AI.MCP.Annotations;
-using Microsoft.Extensions.AI.MCP.Models;
-using Microsoft.Extensions.AI.MCP.TestApp;
+using Microsoft.MCP.Annotations;
+using Microsoft.MCP.Models;
+using Microsoft.MCP.TestApp;
 
-namespace Microsoft.Extensions.AI.MCP.TestApp
+namespace Microsoft.MCP.TestApp
 {
     // Shared implementations for tools and prompts
     public static class SharedImplementations

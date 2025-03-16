@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.AI.MCP.Initialization;
-using MCPCaps = Microsoft.Extensions.AI.MCP.Capabilities;
+using Microsoft.MCP.Initialization;
+using MCPCaps = Microsoft.MCP.Capabilities;
 
 namespace MCP
 {
@@ -196,7 +196,7 @@ namespace MCP
                 };
                 _clientCaps = initParams.Capabilities;
                 // Respond with server info and capabilities
-                var initResult = new Microsoft.Extensions.AI.MCP.Initialization.InitializeResult ()
+                var initResult = new Microsoft.MCP.Initialization.InitializeResult ()
                 { 
                     ServerInfo  = _serverInfo, 
                     Capabilities = _capabilities, 

@@ -1,4 +1,4 @@
-# MCP Experiment
+# MCP Experiment (WIP)
 
 A .NET implementation of the Model Context Protocol (MCP) for client-server communication with AI models.
 

@@ -1,6 +1,10 @@
 # MCP Experiment (WIP)
 
-A .NET implementation of the Model Context Protocol (MCP) for client-server communication with AI models. # Contributing to MCP Experiment. #This was an experiment using Claude Code to generate an SDK and is here for sharing purposes only.*
+A .NET implementation of the Model Context Protocol (MCP) for client-server communication with AI models. # Contributing to MCP Experiment. 
+
+*This was an experiment using Claude Code to generate an SDK from schema, directing it toward emulating minimal web apis, building validation tests and comparing other AI-generated implementations. It is here for sharing purposes only and not intended for general use.*
+
+If you find it useful, go for it. 
 
 ## Overview
 

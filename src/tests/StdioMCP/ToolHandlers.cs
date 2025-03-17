@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using Microsoft.MCP.Annotations;
-using Microsoft.MCP.Models;
-using Microsoft.MCP.Server.Attributes;
-using Microsoft.MCP.TestApp;
+using MCPExperiment.Annotations;
+using MCPExperiment.Models;
+using MCPExperiment.Server.Attributes;
+using MCPExperiment.TestApp;
 
-namespace Microsoft.MCP.TestApp.StdioMCP
+namespace MCPExperiment.TestApp.StdioMCP
 {
     // Tool handler implementations with attributes for discovery
     public class StdioWeatherHandler

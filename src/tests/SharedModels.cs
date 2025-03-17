@@ -1,8 +1,8 @@
-using Microsoft.MCP.Annotations;
-using Microsoft.MCP.Models;
-using Microsoft.MCP.Server.Attributes;
+using MCPExperiment.Annotations;
+using MCPExperiment.Models;
+using MCPExperiment.Server.Attributes;
 
-namespace Microsoft.MCP.TestApp
+namespace MCPExperiment.TestApp
 {
     // Data models for tools and prompts
     public class WeatherRequest

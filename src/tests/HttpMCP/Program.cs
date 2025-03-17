@@ -1,16 +1,16 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.MCP;
-using Microsoft.MCP.Annotations;
-using Microsoft.MCP.Models;
-using Microsoft.MCP.Server;
-using Microsoft.MCP.TestApp;
+using MCPExperiment;
+using MCPExperiment.Annotations;
+using MCPExperiment.Models;
+using MCPExperiment.Server;
+using MCPExperiment.TestApp;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 
-namespace Microsoft.MCP.TestApp.HttpMCP
+namespace MCPExperiment.TestApp.HttpMCP
 {
     public class Program
     {
@@ -78,13 +78,13 @@ namespace Microsoft.MCP.TestApp.HttpMCP
             // to ensure tools are available when SSE connections are established
             try 
             {
-                var initRequest = new Microsoft.MCP.Initialization.InitializeRequest
+                var initRequest = new MCPExperiment.Initialization.InitializeRequest
                 {
-                    Params = new Microsoft.MCP.Initialization.InitializeRequestParams
+                    Params = new MCPExperiment.Initialization.InitializeRequestParams
                     {
                         ProtocolVersion = "2024-11-05",
-                        Capabilities = new Microsoft.MCP.Capabilities.ClientCapabilities(),
-                        ClientInfo = new Microsoft.MCP.Capabilities.Implementation
+                        Capabilities = new MCPExperiment.Capabilities.ClientCapabilities(),
+                        ClientInfo = new MCPExperiment.Capabilities.Implementation
                         {
                             Name = "HttpMCPApp",
                             Version = "1.0"
@@ -366,7 +366,7 @@ namespace Microsoft.MCP.TestApp.HttpMCP
             
             // Add a test endpoint to try SSE with a simple event
             app.MapGet("/test-sse", (Microsoft.Extensions.Logging.ILogger<Program> logger) => {
-                var connectionManager = app.Services.GetRequiredService<Microsoft.MCP.Server.SSE.SSEConnectionManager>();
+                var connectionManager = app.Services.GetRequiredService<MCPExperiment.Server.SSE.SSEConnectionManager>();
                 
                 // Send a simple test event
                 Task.Run(async () => {

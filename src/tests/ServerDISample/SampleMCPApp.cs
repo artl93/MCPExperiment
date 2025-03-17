@@ -2,11 +2,11 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.MCP;
-using Microsoft.MCP.Annotations;
-using Microsoft.MCP.Models;
-using Microsoft.MCP.Server;
-using Microsoft.MCP.Server.Attributes;
+using MCPExperiment;
+using MCPExperiment.Annotations;
+using MCPExperiment.Models;
+using MCPExperiment.Server;
+using MCPExperiment.Server.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -230,13 +230,13 @@ namespace SampleMCPApp
             // Force manual server initialization with a dummy initialize request
             try 
             {
-                var initRequest = new Microsoft.MCP.Initialization.InitializeRequest
+                var initRequest = new MCPExperiment.Initialization.InitializeRequest
                 {
-                    Params = new Microsoft.MCP.Initialization.InitializeRequestParams
+                    Params = new MCPExperiment.Initialization.InitializeRequestParams
                     {
                         ProtocolVersion = "2024-11-05",
-                        Capabilities = new Microsoft.MCP.Capabilities.ClientCapabilities(),
-                        ClientInfo = new Microsoft.MCP.Capabilities.Implementation
+                        Capabilities = new MCPExperiment.Capabilities.ClientCapabilities(),
+                        ClientInfo = new MCPExperiment.Capabilities.Implementation
                         {
                             Name = "SampleMCPApp",
                             Version = "1.0"

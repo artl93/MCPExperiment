@@ -1,15 +1,15 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.MCP;
-using Microsoft.MCP.Annotations;
-using Microsoft.MCP.Models;
-using Microsoft.MCP.Server;
-using Microsoft.MCP.TestApp;
+using MCPExperiment;
+using MCPExperiment.Annotations;
+using MCPExperiment.Models;
+using MCPExperiment.Server;
+using MCPExperiment.TestApp;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Microsoft.MCP.TestApp.StdioMCP
+namespace MCPExperiment.TestApp.StdioMCP
 {
     public class Program
     {

@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Microsoft.MCP.Messages;
+using MCPExperiment.Messages;
 
 namespace MCP
 {

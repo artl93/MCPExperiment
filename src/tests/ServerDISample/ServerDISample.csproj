@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../Microsoft.MCP/Microsoft.MCP.csproj" />
+    <ProjectReference Include="../../MCPExperiment/MCPExperiment.csproj" />
   </ItemGroup>
 
 </Project>

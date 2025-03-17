@@ -2,7 +2,7 @@
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.MCP", "src\Microsoft.MCP\Microsoft.MCP.csproj", "{093164DA-20C2-EEC5-7574-A663458EAE2C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCPExperiment", "src\MCPExperiment\MCPExperiment.csproj", "{093164DA-20C2-EEC5-7574-A663458EAE2C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerDISample", "src\tests\ServerDISample\ServerDISample.csproj", "{A6BDDFF5-0C08-4D1D-A6A8-A1CEEE4829CF}"
 EndProject

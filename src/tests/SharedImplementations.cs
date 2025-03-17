@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.MCP.Annotations;
-using Microsoft.MCP.Models;
-using Microsoft.MCP.TestApp;
+using MCPExperiment.Annotations;
+using MCPExperiment.Models;
+using MCPExperiment.TestApp;
 
-namespace Microsoft.MCP.TestApp
+namespace MCPExperiment.TestApp
 {
     // Shared implementations for tools and prompts
     public static class SharedImplementations

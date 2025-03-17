@@ -10,10 +10,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpMCP", "src\tests\HttpMC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StdioMCP", "src\tests\StdioMCP\StdioMCP.csproj", "{1D0FD2DB-9C75-4B0A-B159-A7FE9537086F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCPConsoleTest", "src\tests\MCPConsoleTest\MCPConsoleTest.csproj", "{EFAC2AB4-D41C-4D5A-8BB4-2D2B60D59BBD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCP", "src\MCP\MCP.csproj", "{A3D9FF0D-1CB5-43F0-A645-E7E16A3483D1}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,14 +32,6 @@ Global
 		{1D0FD2DB-9C75-4B0A-B159-A7FE9537086F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D0FD2DB-9C75-4B0A-B159-A7FE9537086F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D0FD2DB-9C75-4B0A-B159-A7FE9537086F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EFAC2AB4-D41C-4D5A-8BB4-2D2B60D59BBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EFAC2AB4-D41C-4D5A-8BB4-2D2B60D59BBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EFAC2AB4-D41C-4D5A-8BB4-2D2B60D59BBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EFAC2AB4-D41C-4D5A-8BB4-2D2B60D59BBD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A3D9FF0D-1CB5-43F0-A645-E7E16A3483D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A3D9FF0D-1CB5-43F0-A645-E7E16A3483D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A3D9FF0D-1CB5-43F0-A645-E7E16A3483D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A3D9FF0D-1CB5-43F0-A645-E7E16A3483D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
